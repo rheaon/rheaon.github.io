@@ -1,53 +1,340 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>我的个人网站</title>
-	<style>
-        body {
-            /*background-image: url('paper.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-            margin: 0;
-            padding: 0;*/
-            text-align:center;
-            font-family:Arial,sans-serif;
-            background-color:mistyrose;
-        }
-    </style>
-</head>
-<body>
+<title>我的个人网站</title>
+<style>
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: mistyrose;
+    color: #333;
+    transition: all 0.3s ease;
+    margin: 0;
+    padding: 20px;
+}
+body.dark {
+    background: #2a2a2a;
+    color: #fff;
+}
+img {
+    width: 150px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 20px auto;
+}
+.github-link,.email-link {
+    display: inline-block;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+}
+.email-link{
+  background: lightblue;
+  border:none;
+}
+.github-link{
+  background: lightpink;
+}
+.note {
+    font-size: 14px;
+    color: grey;
+}
+body.dark .note {
+    color: #ccc;
+}
+h1 {
+    color: hotpink;
+}
+hr {
+    width: 250px;
+    border-top: 3px solid pink;
+    border-radius: 5px;
+}
+.info-card {
+    background: rgba(255,255,255,0.5);
+    padding: 10px;
+    border-radius: 10px;
+    width: 300px;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+body.dark .info-card {
+    background: #3a3a3a;
+    color: #fff;
+}
+.info-card p {
+    color: #555;
+}
+body.dark .info-card p {
+    color: #eee;
+}
+.info-card h2 {
+    color: palevioletred;
+}
+body.dark .info-card h2 {
+    color: #ffb6c1;
+}
+/*分割线分割线分割/*分割线分割线分割线分割线分割线分割线*/
+.message-board {
+    background: rgba(255,255,255,0.5);
+    padding: 15px;
+    border-radius: 15px;
+    width: 350px;
+    margin: 20px auto;
+    transition: all 0.3s ease;
+}
+body.dark .message-board {
+    background: #3a3a3a;
+}
+.message-board h3 {
+    color: hotpink;
+    margin-bottom: 10px;
+}
+.message-board input {
+    width: 250px;
+    padding: 8px;
+    margin: 5px;
+    border-radius: 8px;
+    border: 1px solid pink;
+    transition: all 0.3s ease;
+}
+.message-board textarea {
+    width: 250px;
+    padding: 8px;
+    margin: 5px;
+    border-radius: 8px;
+    border: 1px solid pink;
+    font-family: Arial, sans-serif;
+    transition: all 0.3s ease;
+}
+.message-board button {
+    background: pink;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+body.dark .message-board input,
+body.dark .message-board textarea {
+    background: #555;
+    color: white;
+    border: 1px solid #777;
+}
+#msgList {
+    margin-top: 15px;
+    text-align: left;
+}
+.msg-item {
+    background: rgba(255,255,255,0.8);
+    color: #666;
+    padding: 8px;
+    margin: 8px 0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+body.dark .msg-item {
+    background: #4a4a4a;
+    color: #fff;
+}
+/*分割线分割线分割线分割线分割线分割线*/
+#skinBtn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: pink;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border: none;
+    cursor: pointer;
+}
+body.dark #skinBtn {
+    background: #555;
+}
+#toastMsg{
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffb7c5;
+  color: #d43f6b;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+#toastMsg.show{opacity: 1;}
+.hobby-item {
+    cursor: pointer;
+    text-decoration: underline;
+    color: hotpink;
+}
 
-<img src="头像.png" style="width:150px;border-radius:50%; display:block;margin:0 auto;margin-bottom:20px;">
-<a href="https://github.com/Rheaon"
-   style="display:inline-block;
-    padding:10px 20px;
-    background:pink;
-    color:white;
-    text-decoration:none;
-    border-radius:8px;">点我跳转</a>
-<p style="font-size:14px;color:grey;">这是我的GitHub链接哦~</p>
-<h1 style="color:hotpink;">你好，这是我的个人网站</h1>
+body.dark .hobby-item {
+    color: #ffb6c1;
+}
+#gameDetail, #musicDetail, #fanjuDetail {
+    background: #fff0f5;
+    transition: all 0.3s ease;
+}
+body.dark #gameDetail,
+body.dark #musicDetail,
+body.dark #fanjuDetail {
+    background: #3a3a3a;
+    color: #fff;
+}
+</style>
+</head>
+
+<body>
+<button id="skinBtn">切换皮肤</button>
+<img src="头像.png" alt="头像">
+<a href="https://github.com/Rheaon" class="github-link">点我跳转GitHub主页</a>
+<a href="javascript:void(0)" class="email-link" id="copyEmailBtn">复制我的邮箱</a>
+<p class="note"></p>
+<h1>你好，这是我的个人网站</h1>
 <p>我正在学习做网站～我目前还什么都不会，看看我能学成什么样吧</p>
 
-<!--分割线--><hr style="width:250px;border-top:3px solid pink;border-radius:5px;"/>
+<hr>
 
-<!--折叠
-<details>
-	<summary>点击展开我的个人信息</summary>
-</details>
--->
-
-<!--白色框框-->
-<div style="background:rgba(255,255,255,0.5);padding:10px;border-radius:10px;width:300px;margin:0 auto;">
-	<!--我的个人信息-->
-	<h2 style="color:palevioletred;">我的个人信息</h2>
-	<p style="color:#555;">昵称：风风</p>
-	<p style="color:#555;">年龄：18</p>
-	<p style="color:#555;">爱好：游戏 手账 音乐</p>
+<div class="info-card">
+    <h2>我的个人信息</h2>
+    <p>昵称：风风</p>
+    <p>年龄：18</p>
+    <p>爱好：
+   <span class="hobby-item" data-target="gameDetail">游戏</span>
+   <span class="hobby-item" data-target="musicDetail">音乐</span>
+   <span class="hobby-item" data-target="fanjuDetail">番/剧</span>
+    </p>
 </div>
-
-
+<div id="fanjuDetail" style="display: none; padding: 10px; border-radius: 10px; width: 300px; margin: 10px auto; text-align: left;">
+    <strong>📺 最近在看的番/剧</strong><br>
+    <p>《葬送的芙莉莲》不多说了，懂得都懂，我甚至买了漫画书，不过还没看完哈哈哈</p>
+    <p>《逃避虽可耻但有用》男女主之间的互动还是很甜的，新垣结衣太可爱啦</p>
+</div>
+<div id="musicDetail" style="display: none; padding: 10px; border-radius: 10px; width: 300px; margin: 10px auto; text-align: left;">
+    <strong>🎤最近在听的音乐</strong><br>
+    <p>《忏悔录》虽然名字是忏悔录，但是我觉得整首歌全是嘲笑，没有一点忏悔的意思</p>
+    <p>《愚人的国度》好听哒好听哒，随机歌单老是乱随机，明明一点也不随机嘛</p>
+</div>
+<div id="gameDetail" style="display: none; padding: 10px; border-radius: 10px; width: 300px; margin: 10px auto; text-align: left;">
+    <strong> 🎮最近在玩的游戏</strong><br>
+    <p>《无限暖暖》也是过年才真正回坑，后悔之前的免活都没拿完，好可惜，要钻的又抽不起</p>
+    <p>《明日方舟》Ask老画些好看的皮肤，我只好买了，我连干员都没有( ᵒ̴̶̷̤໐ᵒ̴̶̷̤ )</p>
+</div>
+<!--分割线分割线分割线分割线分割线分割线*/-->
+<div class="message-board">
+    <h3>留言板</h3>
+    <input type="text" id="msgName" placeholder="你的名字">
+    <br>
+    <textarea id="msgContent" placeholder="想对我说什么..." rows="3"></textarea>
+    <br>
+    <button id="submitMsgBtn">提交留言</button>
+    <div id="msgList"></div>
+</div>
+<!--/*分割线分割线分割线分割线分割线分割线*/-->
+<div id="toastMsg">邮箱已复制~</div>
 </body>
+
+
+<script>
+let btn = document.getElementById('skinBtn');
+btn.onclick = function() {
+    document.body.classList.toggle('dark');
+}
+
+let copyBtn = document.getElementById('copyEmailBtn');
+copyBtn.onclick = function() {
+    let email = '3253808852@qq.com';
+    navigator.clipboard.writeText(email);
+    let toast = document.getElementById('toastMsg');
+    toast.textContent = '邮箱已复制';
+    toast.classList.add('show');
+    setTimeout(function() {
+        toast.classList.remove('show');
+    }, 2000);
+}
+
+let submitBtn = document.getElementById('submitMsgBtn');
+let msgListDiv = document.getElementById('msgList');
+let messages = [];
+
+function loadMessages() {
+    let saved = localStorage.getItem('messages');
+    if (saved) {
+        messages = JSON.parse(saved);
+        displayMessages();
+    }
+}
+
+function saveMessages() {
+    localStorage.setItem('messages', JSON.stringify(messages));
+}
+
+function displayMessages() {
+    msgListDiv.innerHTML = '';
+    for (let i = 0; i < messages.length; i++) {
+        let msgDiv = document.createElement('div');
+        msgDiv.className = 'msg-item';
+        msgDiv.innerHTML = '<strong>' + messages[i].name + '</strong> 说：<br>' + messages[i].content;
+        msgListDiv.appendChild(msgDiv);
+    }
+}
+
+submitBtn.onclick = function() {
+    let name = document.getElementById('msgName').value;
+    let content = document.getElementById('msgContent').value;
+
+    if (name === '' || content === '') {
+        let toast = document.getElementById('toastMsg');
+        toast.textContent = '请填写名字和留言内容';
+        toast.classList.add('show');
+        setTimeout(function() {
+            toast.classList.remove('show');
+        }, 2000);
+        return;
+    }
+
+    messages.push({ name: name, content: content });
+    saveMessages();
+    displayMessages();
+
+    document.getElementById('msgName').value = '';
+    document.getElementById('msgContent').value = '';
+
+    let toast = document.getElementById('toastMsg');
+    toast.textContent = '留言已提交';
+    toast.classList.add('show');
+    setTimeout(function() {
+        toast.classList.remove('show');
+    }, 2000);
+}
+
+loadMessages();
+let hobbyItems = document.querySelectorAll('.hobby-item');
+
+for (let i = 0; i < hobbyItems.length; i++) {
+    hobbyItems[i].onclick = function() {
+        let targetId = this.getAttribute('data-target');
+        let target = document.getElementById(targetId);
+        
+        if (target.style.display === 'none') {
+            target.style.display = 'block';
+        } else {
+            target.style.display = 'none';
+        }
+    }
+}
+</script>
+
+
 </html>
