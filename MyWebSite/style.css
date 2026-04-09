@@ -1,0 +1,221 @@
+﻿body
+{
+}
+
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: mistyrose;
+    color: #333;
+    transition: all 0.3s ease;
+    margin: 0;
+    padding: 20px;
+    }
+body.dark {
+    background: #2a2a2a;
+    color: #fff;
+            }
+img {
+    width: 150px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 20px auto;
+    }
+.github-link,.email-link {
+    display: inline-block;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;}
+.email-link{background: lightblue;border:none;}
+.github-link{background: lightpink;}
+.note {font-size: 14px;color: grey;}
+body.dark .note {color: #ccc;}
+    h1 {color: hotpink;}
+    hr {
+    width: 250px;
+    border-top: 3px solid pink;
+    border-radius: 5px;
+    }
+/*个人信息卡片*/
+.info-card {
+    background: rgba(255,255,255,0.5);
+    padding: 10px;
+    border-radius: 10px;
+    width: 300px;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+            }
+body.dark .info-card {background: #3a3a3a;color: #fff;}
+    .info-card p { color: #555;}
+    body.dark .info-card p {color: #eee;}
+    .info-card h2 {color: palevioletred;}
+body.dark .info-card h2 { color: #ffb6c1;}
+/*留言板*/
+.message-board {
+    background: rgba(255,255,255,0.5);
+    padding: 15px;
+    border-radius: 15px;
+    width: 350px;
+    margin: 20px auto;
+    transition: all 0.3s ease;
+}
+body.dark .message-board {background: #3a3a3a;}
+    .message-board h3 { color: hotpink;margin-bottom: 10px;}
+    .message-board input {
+    width: 250px;
+    padding: 8px;
+    margin: 5px;
+    border-radius: 8px;
+    border: 1px solid pink;
+    transition: all 0.3s ease;}
+.message-board textarea {
+    width: 250px;
+    padding: 8px;
+    margin: 5px;
+    border-radius: 8px;
+    border: 1px solid pink;
+    font-family: Arial, sans-serif;
+    transition: all 0.3s ease;}
+.message-board button {
+    background: pink;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 5px;}
+body.dark .message-board input,
+body.dark .message-board textarea {
+    background: #555;
+    color: #fff;
+    border: 1px solid #777;}
+#msgList {margin-top: 15px;text-align: left;}
+.msg-item {
+    background: rgba(255,255,255,0.8);
+    color: #666;
+    padding: 8px;
+    margin: 8px 0;
+    border-radius: 8px;
+    transition: all 0.3s ease;}
+body.dark .msg-item { background: #4a4a4a;color: #fff;}
+/*切换皮肤*/
+#skinBtn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: pink;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border: none;
+    cursor: pointer;}
+body.dark #skinBtn {background: #555;}
+/*爱好*/
+#toastMsg{
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ffb7c5;
+  color: #d43f6b;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
+#toastMsg.show{opacity: 1;}
+.hobby-item {
+    cursor: pointer;
+    text-decoration: underline;
+    color: hotpink;}
+body.dark .hobby-item { color: #ffb6c1;}
+#gameDetail, #musicDetail, #fanjuDetail {
+    background: #fff0f5;
+    transition: all 0.3s ease;}
+body.dark #gameDetail,
+body.dark #musicDetail,
+body.dark #fanjuDetail {
+    background: #3a3a3a;
+    color: #fff;}
+/*手机缩放*/
+@media (max-width: 600px) { 
+    body {padding: 15px;}
+    h1 {font-size: 28px;}
+    p {font-size: 16px;}
+    .info-card {width: 90%;}
+    .info-card p {font-size: 14px;
+    }
+    .message-board {
+        width: 90%;
+    }
+    .message-board input,
+    .message-board textarea,
+    .message-board button {
+        font-size: 16px;
+    }
+    #skinBtn {
+        top: 5px;
+        left: 5px;
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    .github-link, .email-link {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    .github-link {
+        margin-left: 70px;
+    }
+    #gameDetail, #musicDetail, #fanjuDetail {
+        width: 90%;
+    }
+}
+
+#visitCount { font-weight: bold; color: hotpink; }
+body.dark #visitCount { color: #ffb6c1; }
+.update-time { font-size: 12px; color: #999; margin-top: 30px; }
+body.dark .update-time { color: #aaa; }
+
+/*每日一句的样式*/
+#randomQuote { font-size: 16px; color: hotpink; margin-top: 15px; }
+#quoteBtn { background: pink; color: white; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer;transition: all 0.3s ease; }
+body.dark #quoteBtn { background: #555;color:white; }
+/*显示时间样式*/
+#liveTime { font-size: 12px; color: #999; margin-top: 10px; }
+/*返回顶部样式*/
+#backToTop { position: fixed; bottom: 20px; right: 20px; background: pink; color: white; border: none; border-radius: 30px; padding: 10px 15px; cursor: pointer; }
+body.dark #backToTop { background: #555; }
+/*每日推荐歌曲*/
+.today-recommend {
+background: rgba(255,255,255,0.5);
+padding: 10px;
+border-radius: 15px;
+width: 300px;
+margin: 20px auto;
+transition: all 0.3s ease;
+}
+body.dark .today-recommend {
+background: #3a3a3a;
+}
+.today-recommend h3 {
+color: hotpink;
+margin: 0 0 5px 0;
+}
+@media (max-width: 600px) {
+.today-recommend { width: 90%; }
+}
+/*统计留言*/
+.msg-count {
+font-size: 14px;
+color: #888;
+margin-top: 10px;
+}
+body.dark .msg-count {
+color: #aaa;
+}
