@@ -126,6 +126,7 @@ body.dark .form-iframe {
 */
 
 /*切换皮肤*/
+/* 切换皮肤按钮 - 固定定位，跟随滚动 */
 #skinBtn {
     display: inline-block;
     padding: 10px 20px;
@@ -133,11 +134,20 @@ body.dark .form-iframe {
     color: white;
     text-decoration: none;
     border-radius: 8px;
-    position: absolute;
-    top: 10px;
-    left: 10px;
+    position: fixed;  /* 改成 fixed，跟随滚动 */
+    top: 20px;        /* 距离顶部20px */
+    left: 20px;       /* 距离左边20px */
     border: none;
-    cursor: pointer;}
+    cursor: pointer;
+    z-index: 999;     /* 确保在其他元素上面 */
+    transition: all 0.3s ease;
+}
+
+#skinBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
+}
+
 body.dark #skinBtn {background: #555;}
 /*爱好*/
 #toastMsg{
@@ -169,14 +179,13 @@ body.dark #musicDetail,
 body.dark #fanjuDetail {
     background: #3a3a3a;
     color: #fff;}
-/*手机缩放*/
+/* 手机缩放 */
 @media (max-width: 600px) { 
     body {padding: 15px;}
     h1 {font-size: 28px;}
     p {font-size: 16px;}
     .info-card {width: 90%;}
-    .info-card p {font-size: 14px;
-    }
+    .info-card p {font-size: 14px;}
     .message-board {
         width: 90%;
     }
@@ -186,17 +195,17 @@ body.dark #fanjuDetail {
         font-size: 16px;
     }
     #skinBtn {
-        top: 5px;
-        left: 5px;
-        padding: 6px 12px;
-        font-size: 12px;
+        top: 10px;      /* 手机上距离顶部10px */
+        left: 10px;     /* 手机上距离左边10px */
+        padding: 8px 16px;
+        font-size: 14px;
     }
     .github-link, .email-link {
         padding: 6px 12px;
         font-size: 12px;
     }
     .github-link {
-        margin-left: 70px;
+        margin-left: 0;  /* 手机上去掉左边距，避免和按钮重叠 */
     }
     #gameDetail, #musicDetail, #fanjuDetail {
         width: 90%;
@@ -245,16 +254,16 @@ margin-top: 10px;
 body.dark .msg-count {
 color: #aaa;
 }
-/* 整体留言板卡片 */
+/* 留言板容器 - 颜色和 info-card 一样 */
 .message-board {
-    background: linear-gradient(135deg, #ffe4ec, #fff0f5);
+    background: rgba(255, 255, 255, 0.5);  /* 改成和 info-card 一样 */
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 10px;  /* 和 info-card 一样的圆角 */
     width: 90%;
     max-width: 400px;
-    margin: 30px auto;
-    box-shadow: 0 8px 20px rgba(255, 182, 193, 0.3);
+    margin: 20px auto;  /* 和 info-card 一样 */
     text-align: center;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* 输入框 */
@@ -263,281 +272,101 @@ color: #aaa;
     width: 90%;
     margin: 8px 0;
     padding: 10px;
-    border-radius: 12px;
-    border: 1px solid #ffb6c1;
+    border-radius: 8px;
+    border: 1px solid pink;
     outline: none;
     font-size: 14px;
-    background: #fff;
-}
-
-/* 输入框 focus */
-.message-board input:focus,
-.message-board textarea:focus {
-    border-color: #ff69b4;
-    box-shadow: 0 0 5px rgba(255,105,180,0.3);
+    background: rgba(255, 255, 255, 0.8);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 /* 按钮 */
 .message-board button {
-    background: linear-gradient(135deg, #ff9eb5, #ffb6c1);
+    background: pink;
     border: none;
-    padding: 10px 18px;
-    border-radius: 15px;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 8px;
-}
-
-/* hover效果 */
-.message-board button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 12px rgba(255,105,180,0.3);
-}
-
-/* 留言列表 */
-#msgList {
-    margin-top: 15px;
-    text-align: left;
-}
-
-/* 每条留言 */
-.msg-item {
-    background: rgba(255,255,255,0.85);
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 12px;
-    font-size: 14px;
-    line-height: 1.5;
-    box-shadow: 0 3px 8px rgba(255,182,193,0.2);
-    animation: fadeIn 0.4s ease;
-}
-
-/* 名字 */
-.msg-item strong {
-    color: #ff69b4;
-}
-
-/* 动画 */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-body.dark .message-board {
-    background: #2f2f2f;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-}
-
-body.dark input,
-body.dark textarea {
-    background: #444;
-    color: white;
-    border: 1px solid #666;
-}
-
-body.dark .msg-item {
-    background: #3a3a3a;
-    color: white;
-}
-
-body.dark .msg-item strong {
-    color: #ff9eb5;
-}
-/*留言时间更可爱*/
-.msg-time {
-    float: right;
-    font-size: 12px;
-    color: #999;
-}
-
-body.dark .msg-time {
-    color: #bbb;
-}
-.msg-item button {
-    margin-top: 5px;
-    background: #ff8fa3;
-    border: none;
+    padding: 8px 16px;
     border-radius: 8px;
     color: white;
-    padding: 3px 8px;
+    font-size: 14px;
     cursor: pointer;
-    font-size: 12px;
+    transition: all 0.3s ease;
 }
 
-.msg-item button:hover {
-    background: #ff5c7a;
+.message-board button:hover {
+    transform: translateY(-2px);
 }
 
-let time = new Date(msg.created_at).toLocaleString("zh-CN", {
-    hour12: false
-});
-/*左右气泡留言*/
-/* 一整行 */
+/* 留言条目 */
+.msg-item {
+    background: rgba(255, 255, 255, 0.5);
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 气泡留言行 */
 .msg-row {
     display: flex;
     margin: 10px 0;
 }
 
-/* 左边 */
-.msg-row.left {
-    justify-content: flex-start;
-}
-
-/* 右边 */
-.msg-row.right {
-    justify-content: flex-end;
-}
-
-/* 气泡 */
-.msg-bubble {
+/* 左气泡 */
+.msg-row.left .msg-bubble {
+    background: rgba(255, 255, 255, 0.5);
+    color: #333;
     max-width: 70%;
     padding: 10px 12px;
-    border-radius: 15px;
-    position: relative;
-    font-size: 14px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    animation: fadeIn 0.3s ease;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 左气泡（粉） */
-.msg-row.left .msg-bubble {
-    background: #ffd1dc;
-    color: #333;
-}
-
-/* 右气泡（白） */
+/* 右气泡 */
 .msg-row.right .msg-bubble {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.5);
+    max-width: 70%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 黑夜模式 */
-body.dark .msg-row.left .msg-bubble {
-    background: #ff9eb5;
-    color: #fff;
+/* 名字颜色和 info-card 一样 */
+.msg-item strong,
+.msg-bubble strong {
+    color: palevioletred;
 }
 
-body.dark .msg-row.right .msg-bubble {
-    background: #444;
-    color: #fff;
-}
-
-/* 名字 + 时间 */
-.msg-header {
-    font-size: 12px;
-    margin-bottom: 5px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.msg-time {
-    font-size: 10px;
-    color: #888;
-}
-
-body.dark .msg-time {
-    color: #ccc;
-}
-
-/* 删除按钮 */
-.msg-bubble button {
-    margin-top: 5px;
-    background: transparent;
-    border: none;
-    color: #ff6b81;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-/* 动画 */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-/*留言板黑夜模式*/
-/* 留言板容器 - 添加平滑过渡 */
-.message-board {
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* 留言板输入框和文本框 */
-.message-board input,
-.message-board textarea {
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-}
-
-/* 留言板按钮 */
-.message-board button {
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.message-board button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
-}
-
-/* 留言列表项 */
-.msg-item {
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-    animation: fadeIn 0.4s ease;
-}
-
-.msg-item:hover {
-    transform: translateX(5px);
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* 黑夜模式下的留言板样式 */
+/* ========== 黑夜模式（和 info-card 黑夜一样） ========== */
 body.dark .message-board {
-    background: rgba(30, 30, 46, 0.95);
+    background: #3a3a3a;  /* 和 body.dark .info-card 一样 */
+    color: #fff;
 }
 
 body.dark .message-board input,
 body.dark .message-board textarea {
-    background: #2a2a3e;
-    border-color: #4a4a6e;
-    color: #eee;
+    background: #555;
+    color: #fff;
+    border: 1px solid #777;
 }
 
-body.dark .message-board input:focus,
-body.dark .message-board textarea:focus {
-    border-color: #ff69b4;
-    outline: none;
+body.dark .message-board button {
+    background: #555;
+    color: white;
 }
 
 body.dark .msg-item {
-    background: #2a2a3e;
-    color: #eee;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    background: #3a3a3a;
+    color: #fff;
 }
 
-/* 删除按钮样式（如果存在） */
-.msg-item button {
-    transition: all 0.2s ease;
+body.dark .msg-row.left .msg-bubble,
+body.dark .msg-row.right .msg-bubble {
+    background: #3a3a3a;
+    color: #fff;
 }
 
-.msg-item button:hover {
-    transform: scale(1.05);
+body.dark .msg-item strong,
+body.dark .msg-bubble strong {
+    color: #ffb6c1;  /* 和 info-card 黑夜的 h2 颜色一样 */
 }
