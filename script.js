@@ -1,4 +1,15 @@
 // JavaScript source code
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("skinBtn").onclick = () => {
+        document.body.classList.toggle("dark");
+    };
+
+    // 这里也把其他按钮绑定事件放进来
+    document.getElementById("copyEmailBtn").onclick = copyEmail;
+    document.getElementById("quoteBtn").onclick = changeQuote;
+});
+
+////////////
 let btn = document.getElementById('skinBtn');
 btn.onclick = function() {
     document.body.classList.toggle('dark');
@@ -241,48 +252,23 @@ async function loadMessages() {
     let html = "";
 
     data.forEach((msg, index) => {
-    let time = new Date(msg.created_at).toLocaleString();
 
-    // 偶数左边，奇数右边
-    let side = index % 2 === 0 ? "left" : "right";
+        let time = new Date(msg.created_at).toLocaleString();
 
-    html += `
-    <div class="msg-row ${side}">
-        <div class="msg-bubble">
-            <div class="msg-header">
-                <strong>${msg.name}</strong>
-                <span class="msg-time">${time}</span>
+        
+
+        html += `
+        <div class="msg-row ${side}">
+            <div class="msg-bubble">
+                <div class="msg-header">
+                    <strong>${msg.name}</strong>
+                    <span class="msg-time">${time}</span>
+                </div>
+                <div class="msg-content">${msg.content}</div>
+                <button onclick="deleteMessage(${msg.id})">删除</button>
             </div>
-            <div class="msg-content">${msg.content}</div>
-            <button onclick="deleteMessage(${msg.id})">删除</button>
-        </div>
-    </div>`;
-});
-
-html += `<div class="msg-item">
-    <strong>${msg.name}</strong>
-    <span class="msg-time">${time}</span><br>
-    ${msg.content}
-    <br>
-    <button onclick="deleteMessage(${msg.id})">删除</button>
-</div>`;
+        </div>`;
     });
 
     document.getElementById("msgList").innerHTML = html;
 }
-
-loadMessages();
-async function deleteMessage(id) {
-    if (!confirm("确定要删除这条留言吗？")) return;
-
-    await fetch(SUPABASE_URL + `/rest/v1/messages?id=eq.${id}`, {
-        method: "DELETE",
-        headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization": "Bearer " + SUPABASE_KEY
-        }
-    });
-
-    loadMessages();
-}
-let side = msg.name === "风风" ? "right" : "left";
