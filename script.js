@@ -214,6 +214,7 @@ backBtn.onclick = function() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 /////////////////
+///////////////// Supabase 留言板 /////////////////
 const SUPABASE_URL = "https://lzubeowxtlqmtypzgxrv.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6dWJlb3d4dGxxbXR5cHpneHJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NzYxOTgsImV4cCI6MjA5MTQ1MjE5OH0.Fsjs0ZqdJ5V-cdkdLAgJxgwKpUHEp3kO4MIRnhy7pEo";
 
@@ -221,54 +222,129 @@ async function submitMessage() {
     let name = document.getElementById("nameInput").value;
     let content = document.getElementById("contentInput").value;
 
-    if (!name || !content) return alert("写点东西嘛~");
+    if (!name || !content) {
+        showToast("请填写名字和留言内容~");
+        return;
+    }
 
-    await fetch(SUPABASE_URL + "/rest/v1/messages", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "apikey": SUPABASE_KEY,
-            "Authorization": "Bearer " + SUPABASE_KEY
-        },
-        body: JSON.stringify({ name, content })
-    });
+    try {
+        let response = await fetch(SUPABASE_URL + "/rest/v1/messages", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "apikey": SUPABASE_KEY,
+                "Authorization": "Bearer " + SUPABASE_KEY
+            },
+            body: JSON.stringify({ name, content })
+        });
 
-    document.getElementById("contentInput").value = "";
-
-    loadMessages();
+        if (response.ok) {
+            document.getElementById("contentInput").value = "";
+            document.getElementById("nameInput").value = "";
+            showToast("留言已发送！✨");
+            loadMessages(); // 重新加载留言
+        } else {
+            showToast("发送失败，请稍后再试");
+        }
+    } catch (error) {
+        console.error("提交留言出错:", error);
+        showToast("网络错误，请稍后再试");
+    }
 }
 
 async function loadMessages() {
-    let res = await fetch(
-        SUPABASE_URL + "/rest/v1/messages?select=*&order=created_at.desc",
-        {
-            headers: {
-                "apikey": SUPABASE_KEY
+    try {
+        let res = await fetch(
+            SUPABASE_URL + "/rest/v1/messages?select=*&order=created_at.desc",
+            {
+                headers: {
+                    "apikey": SUPABASE_KEY
+                }
             }
-        }
-    );
+        );
 
-    let data = await res.json();
-    let html = "";
+        let data = await res.json();
+        let html = "";
 
-    data.forEach((msg, index) => {
-
-        let time = new Date(msg.created_at).toLocaleString();
-
-        
-
-        html += `
-        <div class="msg-row ${side}">
-            <div class="msg-bubble">
-                <div class="msg-header">
-                    <strong>${msg.name}</strong>
-                    <span class="msg-time">${time}</span>
+        for (let msg of data) {
+            let time = msg.created_at ? new Date(msg.created_at).toLocaleString() : "刚刚";
+            
+            html += `
+            <div class="msg-item" style="background: #f5f5f5; margin: 10px 0; padding: 12px; border-radius: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <strong style="color: #ff69b4;">💬 ${escapeHtml(msg.name)}</strong>
+                    <span style="font-size: 12px; color: #999;">${time}</span>
                 </div>
-                <div class="msg-content">${msg.content}</div>
-                <button onclick="deleteMessage(${msg.id})">删除</button>
-            </div>
-        </div>`;
-    });
+                <div style="margin: 8px 0; color: #333;">${escapeHtml(msg.content)}</div>
+                <button onclick="deleteMessage('${msg.id}')" style="background: #ff6b6b; color: white; border: none; border-radius: 6px; padding: 4px 12px; cursor: pointer; font-size: 12px;">删除</button>
+            </div>`;
+        }
 
-    document.getElementById("msgList").innerHTML = html;
+        if (data.length === 0) {
+            html = '<div style="text-align: center; color: #999; padding: 20px;">暂无留言，来抢沙发吧~ ✨</div>';
+        }
+
+        document.getElementById("msgList").innerHTML = html;
+    } catch (error) {
+        console.error("加载留言出错:", error);
+        document.getElementById("msgList").innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">加载留言失败，请刷新重试</div>';
+    }
 }
+
+async function deleteMessage(id) {
+    if (!confirm("确定要删除这条留言吗？")) return;
+    
+    try {
+        let response = await fetch(SUPABASE_URL + "/rest/v1/messages?id=eq." + id, {
+            method: "DELETE",
+            headers: {
+                "apikey": SUPABASE_KEY,
+                "Authorization": "Bearer " + SUPABASE_KEY
+            }
+        });
+
+        if (response.ok) {
+            showToast("留言已删除");
+            loadMessages(); // 重新加载留言列表
+        } else {
+            showToast("删除失败");
+        }
+    } catch (error) {
+        console.error("删除留言出错:", error);
+        showToast("删除失败，请稍后再试");
+    }
+}
+
+// 辅助函数：防止XSS攻击
+function escapeHtml(text) {
+    if (!text) return "";
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+// 显示提示信息
+function showToast(msg) {
+    let toast = document.getElementById('toastMsg');
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function() {
+        toast.classList.remove('show');
+    }, 2000);
+}
+
+// 页面加载时获取留言
+document.addEventListener("DOMContentLoaded", function() {
+    loadMessages();
+    
+    // 其他初始化代码...
+    document.getElementById("skinBtn").onclick = () => {
+        document.body.classList.toggle("dark");
+    };
+    document.getElementById("copyEmailBtn").onclick = copyEmail;
+    document.getElementById("quoteBtn").onclick = changeQuote;
+});
