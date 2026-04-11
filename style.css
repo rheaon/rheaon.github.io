@@ -466,3 +466,78 @@ body.dark .msg-time {
         transform: translateY(0);
     }
 }
+/*留言板黑夜模式*/
+/* 留言板容器 - 添加平滑过渡 */
+.message-board {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 留言板输入框和文本框 */
+.message-board input,
+.message-board textarea {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* 留言板按钮 */
+.message-board button {
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.message-board button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
+}
+
+/* 留言列表项 */
+.msg-item {
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    animation: fadeIn 0.4s ease;
+}
+
+.msg-item:hover {
+    transform: translateX(5px);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 黑夜模式下的留言板样式 */
+body.dark .message-board {
+    background: rgba(30, 30, 46, 0.95);
+}
+
+body.dark .message-board input,
+body.dark .message-board textarea {
+    background: #2a2a3e;
+    border-color: #4a4a6e;
+    color: #eee;
+}
+
+body.dark .message-board input:focus,
+body.dark .message-board textarea:focus {
+    border-color: #ff69b4;
+    outline: none;
+}
+
+body.dark .msg-item {
+    background: #2a2a3e;
+    color: #eee;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 删除按钮样式（如果存在） */
+.msg-item button {
+    transition: all 0.2s ease;
+}
+
+.msg-item button:hover {
+    transform: scale(1.05);
+}

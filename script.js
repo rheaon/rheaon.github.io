@@ -348,3 +348,41 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("copyEmailBtn").onclick = copyEmail;
     document.getElementById("quoteBtn").onclick = changeQuote;
 });
+// 修改 loadMessages 函数，添加动画类
+async function loadMessages() {
+    try {
+        let res = await fetch(
+            SUPABASE_URL + "/rest/v1/messages?select=*&order=created_at.desc",
+            {
+                headers: {
+                    "apikey": SUPABASE_KEY
+                }
+            }
+        );
+
+        let data = await res.json();
+        let html = "";
+
+        data.forEach((msg, index) => {
+            let time = msg.created_at ? new Date(msg.created_at).toLocaleString() : "刚刚";
+            
+            html += `
+            <div class="msg-item" style="animation-delay: ${index * 0.05}s">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <strong>💬 ${escapeHtml(msg.name)}</strong>
+                    <span style="font-size: 12px; opacity: 0.7;">${time}</span>
+                </div>
+                <div style="margin: 8px 0;">${escapeHtml(msg.content)}</div>
+                <button onclick="deleteMessage('${msg.id}')" style="background: #ff6b6b; color: white; border: none; border-radius: 6px; padding: 4px 12px; cursor: pointer; font-size: 12px;">删除</button>
+            </div>`;
+        });
+
+        if (data.length === 0) {
+            html = '<div style="text-align: center; opacity: 0.7; padding: 20px;">✨ 暂无留言，来抢沙发吧~ ✨</div>';
+        }
+
+        document.getElementById("msgList").innerHTML = html;
+    } catch (error) {
+        console.error("加载留言出错:", error);
+    }
+}
