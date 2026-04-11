@@ -52,7 +52,7 @@ body.dark .info-card {background: #3a3a3a;color: #fff;}
     .info-card h2 {color: palevioletred;}
 body.dark .info-card h2 { color: #ffb6c1;}
 /*留言板*/
-.message-board {
+/*.message-board {
     background: rgba(255,255,255,0.5);
     padding: 15px;
     border-radius: 15px;
@@ -99,6 +99,32 @@ body.dark .message-board textarea {
     border-radius: 8px;
     transition: all 0.3s ease;}
 body.dark .msg-item { background: #4a4a4a;color: #fff;}
+
+.form-wrapper {
+    background: linear-gradient(135deg, #ffe4ec, #fff0f5);
+    padding: 20px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto;
+    box-shadow: 0 8px 20px rgba(255, 182, 193, 0.3);
+}
+
+.form-iframe {
+    width: 100%;
+    height: 600px;
+    border: none;
+    border-radius: 15px;
+}
+body.dark .form-wrapper {
+    background: #3a3a3a;
+}
+
+body.dark .form-iframe {
+    filter: brightness(0.9) contrast(0.9);
+}
+*/
+
 /*切换皮肤*/
 #skinBtn {
     display: inline-block;
@@ -218,4 +244,225 @@ margin-top: 10px;
 }
 body.dark .msg-count {
 color: #aaa;
+}
+/* 整体留言板卡片 */
+.message-board {
+    background: linear-gradient(135deg, #ffe4ec, #fff0f5);
+    padding: 20px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    margin: 30px auto;
+    box-shadow: 0 8px 20px rgba(255, 182, 193, 0.3);
+    text-align: center;
+}
+
+/* 输入框 */
+.message-board input,
+.message-board textarea {
+    width: 90%;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #ffb6c1;
+    outline: none;
+    font-size: 14px;
+    background: #fff;
+}
+
+/* 输入框 focus */
+.message-board input:focus,
+.message-board textarea:focus {
+    border-color: #ff69b4;
+    box-shadow: 0 0 5px rgba(255,105,180,0.3);
+}
+
+/* 按钮 */
+.message-board button {
+    background: linear-gradient(135deg, #ff9eb5, #ffb6c1);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 15px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 8px;
+}
+
+/* hover效果 */
+.message-board button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(255,105,180,0.3);
+}
+
+/* 留言列表 */
+#msgList {
+    margin-top: 15px;
+    text-align: left;
+}
+
+/* 每条留言 */
+.msg-item {
+    background: rgba(255,255,255,0.85);
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    box-shadow: 0 3px 8px rgba(255,182,193,0.2);
+    animation: fadeIn 0.4s ease;
+}
+
+/* 名字 */
+.msg-item strong {
+    color: #ff69b4;
+}
+
+/* 动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+body.dark .message-board {
+    background: #2f2f2f;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+body.dark input,
+body.dark textarea {
+    background: #444;
+    color: white;
+    border: 1px solid #666;
+}
+
+body.dark .msg-item {
+    background: #3a3a3a;
+    color: white;
+}
+
+body.dark .msg-item strong {
+    color: #ff9eb5;
+}
+/*留言时间更可爱*/
+.msg-time {
+    float: right;
+    font-size: 12px;
+    color: #999;
+}
+
+body.dark .msg-time {
+    color: #bbb;
+}
+.msg-item button {
+    margin-top: 5px;
+    background: #ff8fa3;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 3px 8px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.msg-item button:hover {
+    background: #ff5c7a;
+}
+
+let time = new Date(msg.created_at).toLocaleString("zh-CN", {
+    hour12: false
+});
+/*左右气泡留言*/
+/* 一整行 */
+.msg-row {
+    display: flex;
+    margin: 10px 0;
+}
+
+/* 左边 */
+.msg-row.left {
+    justify-content: flex-start;
+}
+
+/* 右边 */
+.msg-row.right {
+    justify-content: flex-end;
+}
+
+/* 气泡 */
+.msg-bubble {
+    max-width: 70%;
+    padding: 10px 12px;
+    border-radius: 15px;
+    position: relative;
+    font-size: 14px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    animation: fadeIn 0.3s ease;
+}
+
+/* 左气泡（粉） */
+.msg-row.left .msg-bubble {
+    background: #ffd1dc;
+    color: #333;
+}
+
+/* 右气泡（白） */
+.msg-row.right .msg-bubble {
+    background: #ffffff;
+}
+
+/* 黑夜模式 */
+body.dark .msg-row.left .msg-bubble {
+    background: #ff9eb5;
+    color: #fff;
+}
+
+body.dark .msg-row.right .msg-bubble {
+    background: #444;
+    color: #fff;
+}
+
+/* 名字 + 时间 */
+.msg-header {
+    font-size: 12px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.msg-time {
+    font-size: 10px;
+    color: #888;
+}
+
+body.dark .msg-time {
+    color: #ccc;
+}
+
+/* 删除按钮 */
+.msg-bubble button {
+    margin-top: 5px;
+    background: transparent;
+    border: none;
+    color: #ff6b81;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* 动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

@@ -7,7 +7,7 @@
 <body>
 <button id="skinBtn">切换皮肤</button>
 <p id="liveTime"></p>
-<p class="update-time">📅 最后更新：2026年4月10日13时</p>
+<p class="update-time">📅 最后更新：2026年4月11日18时</p>
 <img src="头像.png" alt="头像">
 <a href="https://github.com/Rheaon" class="github-link">点我跳转GitHub主页</a>
 <a href="javascript:void(0)" class="email-link" id="copyEmailBtn">复制我的邮箱</a>
@@ -49,17 +49,31 @@
 	<p>《明日方舟》Ask老画些好看的皮肤，我只好买了，我连干员都没有( ᵒ̴̶̷̤໐ᵒ̴̶̷̤ )</p>
 </div>
 <!--留言板-->
-<div class="message-board">
-	<h3>留言板</h3>
-	<input type="text" id="msgName" placeholder="你的名字">
-	<br>
-	<textarea id="msgContent" placeholder="想对我说什么..." rows="3"></textarea>
-	<br>
-	<button id="submitMsgBtn">提交留言</button>
-	<div id="msgList"></div>
+<!--<div class="message-board">
+    <h3>留言板</h3>
+    <p style="font-size:14px;color:gray;">
+        可以留下点什么吗～我都会看到的✨
+    </p>
+	<p style="font-size:14px;color:gray;">
+匿名也可以啦，不过我更想知道你是谁(｡•́︿•̀｡)
+</p>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScATZAyNeMOhfTV41R33YDMhQHWp1xcaahMG0t4W1wx7Nj0Xw/viewform?embedded=true"
+    style="width:100%; height:650px; border:none;"
+	height:700px;>
+    </iframe>
 </div>
+<h3>大家的留言 💬</h3>
+<div id="msgList"></div>
+留言板-->
+<div class="message-board">
+    <h3>留言板 💬</h3>
 
+    <input id="nameInput" placeholder="你的名字">
+    <textarea id="contentInput" placeholder="想说什么..."></textarea>
+    <button onclick="submitMessage()">发送</button>
 
+    <div id="msgList"></div>
+</div>
 <div id="toastMsg">邮箱已复制~</div>
 <!--返回顶部-->
 <button id="backToTop" style="display: none; position: fixed; bottom: 20px; right: 20px; background: pink; color: white; border: none; border-radius: 30px; padding: 10px 15px; cursor: pointer;">⬆ 顶部</button>

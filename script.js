@@ -16,7 +16,7 @@ copyBtn.onclick = function() {
     }, 2000);
 }
 ///////////////////////留言板//////////////////////////////
-let submitBtn = document.getElementById('submitMsgBtn');
+/*let submitBtn = document.getElementById('submitMsgBtn');
 let msgListDiv = document.getElementById('msgList');
 let messages = [];
 
@@ -72,6 +72,60 @@ submitBtn.onclick = function() {
 }
 
 loadMessages();
+/////////////////////////
+function loadOnlineMessages() {
+    let url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTTdFvJpkcHTwkVcclH6gLhu8BWbJyUiCY4u7riwAK5P3cC41aBHMZ7t8Fg5zypYyw6AgAcZxpF7s8L/pub?output=csv";
+
+    fetch(url)
+        .then(res => res.text())
+        .then(data => {
+            let rows = data.split("\n");
+            let html = "";
+
+            for (let i = 1; i < rows.length; i++) { // 跳过表头
+                let cols = rows[i].split(",");
+                if (cols.length >= 3) {
+                    let name = cols[1];
+                    let content = cols[2];
+
+                    html += `<div class="msg-item">
+                        <strong>${name}</strong>：<br>${content}
+                    </div>`;
+                }
+            }
+
+            document.getElementById("msgList").innerHTML = html;
+        });
+}
+loadOnlineMessages();
+function loadOnlineMessages() {
+    let url = "https://docs.google.com/forms/d/e/1FAIpQLScATZAyNeMOhfTV41R33YDMhQHWp1xcaahMG0t4W1wx7Nj0Xw/viewform?embedded=true";
+
+    fetch(url)
+        .then(res => res.text())
+        .then(data => {
+            let rows = data.split("\n");
+            let html = "";
+
+            for (let i = rows.length - 1; i > 0; i--) { // 倒序显示
+                let cols = rows[i].split(",");
+
+                if (cols.length >= 3) {
+                    let name = cols[1];
+                    let content = cols[2];
+
+                    html += `<div class="msg-item">
+                        <strong>${name}</strong>：<br>${content}
+                    </div>`;
+                }
+            }
+
+            document.getElementById("msgList").innerHTML = html;
+        });
+}
+
+loadOnlineMessages();*/
+
 /////////////////////////每日一句//////////////////////////////
 let quotes = [
     "✨ 且将新火试新茶，诗酒趁年华 ✨",
@@ -148,3 +202,87 @@ window.onscroll = function() {
 backBtn.onclick = function() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+/////////////////
+const SUPABASE_URL = "https://lzubeowxtlqmtypzgxrv.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6dWJlb3d4dGxxbXR5cHpneHJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NzYxOTgsImV4cCI6MjA5MTQ1MjE5OH0.Fsjs0ZqdJ5V-cdkdLAgJxgwKpUHEp3kO4MIRnhy7pEo";
+
+async function submitMessage() {
+    let name = document.getElementById("nameInput").value;
+    let content = document.getElementById("contentInput").value;
+
+    if (!name || !content) return alert("写点东西嘛~");
+
+    await fetch(SUPABASE_URL + "/rest/v1/messages", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_KEY,
+            "Authorization": "Bearer " + SUPABASE_KEY
+        },
+        body: JSON.stringify({ name, content })
+    });
+
+    document.getElementById("contentInput").value = "";
+
+    loadMessages();
+}
+
+async function loadMessages() {
+    let res = await fetch(
+        SUPABASE_URL + "/rest/v1/messages?select=*&order=created_at.desc",
+        {
+            headers: {
+                "apikey": SUPABASE_KEY
+            }
+        }
+    );
+
+    let data = await res.json();
+    let html = "";
+
+    data.forEach((msg, index) => {
+    let time = new Date(msg.created_at).toLocaleString();
+
+    // 偶数左边，奇数右边
+    let side = index % 2 === 0 ? "left" : "right";
+
+    html += `
+    <div class="msg-row ${side}">
+        <div class="msg-bubble">
+            <div class="msg-header">
+                <strong>${msg.name}</strong>
+                <span class="msg-time">${time}</span>
+            </div>
+            <div class="msg-content">${msg.content}</div>
+            <button onclick="deleteMessage(${msg.id})">删除</button>
+        </div>
+    </div>`;
+});
+
+html += `<div class="msg-item">
+    <strong>${msg.name}</strong>
+    <span class="msg-time">${time}</span><br>
+    ${msg.content}
+    <br>
+    <button onclick="deleteMessage(${msg.id})">删除</button>
+</div>`;
+    });
+
+    document.getElementById("msgList").innerHTML = html;
+}
+
+loadMessages();
+async function deleteMessage(id) {
+    if (!confirm("确定要删除这条留言吗？")) return;
+
+    await fetch(SUPABASE_URL + `/rest/v1/messages?id=eq.${id}`, {
+        method: "DELETE",
+        headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization": "Bearer " + SUPABASE_KEY
+        }
+    });
+
+    loadMessages();
+}
+let side = msg.name === "风风" ? "right" : "left";
