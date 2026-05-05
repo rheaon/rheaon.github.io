@@ -51,79 +51,6 @@ body.dark .info-card {background: #3a3a3a;color: #fff;}
     body.dark .info-card p {color: #eee;}
     .info-card h2 {color: palevioletred;}
 body.dark .info-card h2 { color: #ffb6c1;}
-/*留言板*/
-/*.message-board {
-    background: rgba(255,255,255,0.5);
-    padding: 15px;
-    border-radius: 15px;
-    width: 350px;
-    margin: 20px auto;
-    transition: all 0.3s ease;
-}
-body.dark .message-board {background: #3a3a3a;}
-    .message-board h3 { color: hotpink;margin-bottom: 10px;}
-    .message-board input {
-    width: 250px;
-    padding: 8px;
-    margin: 5px;
-    border-radius: 8px;
-    border: 1px solid pink;
-    transition: all 0.3s ease;}
-.message-board textarea {
-    width: 250px;
-    padding: 8px;
-    margin: 5px;
-    border-radius: 8px;
-    border: 1px solid pink;
-    font-family: Arial, sans-serif;
-    transition: all 0.3s ease;}
-.message-board button {
-    background: pink;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 5px;}
-body.dark .message-board input,
-body.dark .message-board textarea {
-    background: #555;
-    color: #fff;
-    border: 1px solid #777;}
-#msgList {margin-top: 15px;text-align: left;}
-.msg-item {
-    background: rgba(255,255,255,0.8);
-    color: #666;
-    padding: 8px;
-    margin: 8px 0;
-    border-radius: 8px;
-    transition: all 0.3s ease;}
-body.dark .msg-item { background: #4a4a4a;color: #fff;}
-
-.form-wrapper {
-    background: linear-gradient(135deg, #ffe4ec, #fff0f5);
-    padding: 20px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 500px;
-    margin: 20px auto;
-    box-shadow: 0 8px 20px rgba(255, 182, 193, 0.3);
-}
-
-.form-iframe {
-    width: 100%;
-    height: 600px;
-    border: none;
-    border-radius: 15px;
-}
-body.dark .form-wrapper {
-    background: #3a3a3a;
-}
-
-body.dark .form-iframe {
-    filter: brightness(0.9) contrast(0.9);
-}
-*/
 
 /*切换皮肤*/
 /* 切换皮肤按钮 - 固定定位，跟随滚动 */
@@ -369,4 +296,25 @@ body.dark .msg-row.right .msg-bubble {
 body.dark .msg-item strong,
 body.dark .msg-bubble strong {
     color: #ffb6c1;  /* 和 info-card 黑夜的 h2 颜色一样 */
+}
+/* 留言板柔和背景 */
+.message-board {
+    background: rgba(255, 240, 245, 0.8) !important;
+    /* 淡粉色半透明 */
+}
+
+.msg-item {
+    background: rgba(255, 255, 255, 0.9) !important;
+    /* 留言条白色半透明 */
+    backdrop-filter: blur(2px);
+    /* 轻微毛玻璃效果 */
+}
+
+body.dark .message-board {
+    background: rgba(50, 50, 70, 0.8) !important;
+    /* 暗色模式半透明 */
+}
+
+body.dark .msg-item {
+    background: rgba(60, 60, 80, 0.9) !important;
 }
