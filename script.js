@@ -26,116 +26,7 @@ copyBtn.onclick = function() {
         toast.classList.remove('show');
     }, 2000);
 }
-///////////////////////留言板//////////////////////////////
-/*let submitBtn = document.getElementById('submitMsgBtn');
-let msgListDiv = document.getElementById('msgList');
-let messages = [];
 
-function loadMessages() {
-    let saved = localStorage.getItem('messages');
-    if (saved) {
-        messages = JSON.parse(saved);
-        displayMessages();
-    }
-}
-
-function saveMessages() {
-    localStorage.setItem('messages', JSON.stringify(messages));
-}
-
-function displayMessages() {
-    msgListDiv.innerHTML = '';
-    for (let i = 0; i < messages.length; i++) {
-        let msgDiv = document.createElement('div');
-        msgDiv.className = 'msg-item';
-        msgDiv.innerHTML = '<strong>' + messages[i].name + '</strong> 说：<br>' + messages[i].content;
-        msgListDiv.appendChild(msgDiv);
-    }
-}
-
-submitBtn.onclick = function() {
-    let name = document.getElementById('msgName').value;
-    let content = document.getElementById('msgContent').value;
-
-    if (name === '' || content === '') {
-        let toast = document.getElementById('toastMsg');
-        toast.textContent = '请填写名字和留言内容';
-        toast.classList.add('show');
-        setTimeout(function() {
-            toast.classList.remove('show');
-        }, 2000);
-        return;
-    }
-
-    messages.push({ name: name, content: content });
-    saveMessages();
-    displayMessages();
-
-    document.getElementById('msgName').value = '';
-    document.getElementById('msgContent').value = '';
-
-    let toast = document.getElementById('toastMsg');
-    toast.textContent = '留言已提交';
-    toast.classList.add('show');
-    setTimeout(function() {
-        toast.classList.remove('show');
-    }, 2000);
-}
-
-loadMessages();
-/////////////////////////
-function loadOnlineMessages() {
-    let url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTTdFvJpkcHTwkVcclH6gLhu8BWbJyUiCY4u7riwAK5P3cC41aBHMZ7t8Fg5zypYyw6AgAcZxpF7s8L/pub?output=csv";
-
-    fetch(url)
-        .then(res => res.text())
-        .then(data => {
-            let rows = data.split("\n");
-            let html = "";
-
-            for (let i = 1; i < rows.length; i++) { // 跳过表头
-                let cols = rows[i].split(",");
-                if (cols.length >= 3) {
-                    let name = cols[1];
-                    let content = cols[2];
-
-                    html += `<div class="msg-item">
-                        <strong>${name}</strong>：<br>${content}
-                    </div>`;
-                }
-            }
-
-            document.getElementById("msgList").innerHTML = html;
-        });
-}
-loadOnlineMessages();
-function loadOnlineMessages() {
-    let url = "https://docs.google.com/forms/d/e/1FAIpQLScATZAyNeMOhfTV41R33YDMhQHWp1xcaahMG0t4W1wx7Nj0Xw/viewform?embedded=true";
-
-    fetch(url)
-        .then(res => res.text())
-        .then(data => {
-            let rows = data.split("\n");
-            let html = "";
-
-            for (let i = rows.length - 1; i > 0; i--) { // 倒序显示
-                let cols = rows[i].split(",");
-
-                if (cols.length >= 3) {
-                    let name = cols[1];
-                    let content = cols[2];
-
-                    html += `<div class="msg-item">
-                        <strong>${name}</strong>：<br>${content}
-                    </div>`;
-                }
-            }
-
-            document.getElementById("msgList").innerHTML = html;
-        });
-}
-
-loadOnlineMessages();*/
 
 /////////////////////////每日一句//////////////////////////////
 let quotes = [
@@ -386,3 +277,36 @@ async function loadMessages() {
         console.error("加载留言出错:", error);
     }
 }
+////分页留言板///
+let currentPage = 1;
+const pageSize = 5; // 每页5条
+function renderMessages() {
+  const container = document.getElementById("message-list");
+  container.innerHTML = "";
+
+  let start = (currentPage - 1) * pageSize;
+  let end = start + pageSize;
+
+  let pageData = messages.slice(start, end);
+
+  pageData.forEach(msg => {
+    let div = document.createElement("div");
+    div.innerText = msg;
+    container.appendChild(div);
+  });
+}
+function nextPage() {
+  if (currentPage * pageSize < messages.length) {
+    currentPage++;
+    renderMessages();
+  }
+}
+
+function prevPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    renderMessages();
+  }
+}
+<button onclick="prevPage()">上一页</button>
+<button onclick="nextPage()">下一页</button>
