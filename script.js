@@ -278,8 +278,17 @@ async function loadMessages() {
     }
 }
 ////分页留言板///
+let messages = [
+  "留言1",
+  "留言2",
+  "留言3",
+  "留言4",
+  "留言5"
+];
+
 let currentPage = 1;
-const pageSize = 5; // 每页5条
+const pageSize = 5; // 每页2条
+
 function renderMessages() {
   const container = document.getElementById("message-list");
   container.innerHTML = "";
@@ -295,6 +304,7 @@ function renderMessages() {
     container.appendChild(div);
   });
 }
+
 function nextPage() {
   if (currentPage * pageSize < messages.length) {
     currentPage++;
@@ -308,5 +318,6 @@ function prevPage() {
     renderMessages();
   }
 }
-<button onclick="prevPage()">上一页</button>
-<button onclick="nextPage()">下一页</button>
+
+// ✅ 页面加载时先渲染一次（很关键）
+document.addEventListener("DOMContentLoaded", renderMessages);
