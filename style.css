@@ -286,7 +286,10 @@ body.dark .msg-item {
     background: #3a3a3a;
     color: #fff;
 }
-
+body.dark .msg-item div {
+    color: #ffffff !important;
+    /* 纯白色，最清晰 */
+}
 body.dark .msg-row.left .msg-bubble,
 body.dark .msg-row.right .msg-bubble {
     background: #3a3a3a;
@@ -670,4 +673,14 @@ body.dark .music-review {
     .music-review {
         font-size: 12px;
     }
+}
+/* 强制覆盖 - 让封面变成方形 */
+.music-cover-wrapper {
+    border-radius: 16px !important;
+}
+
+.music-cover-img {
+    border-radius: 0 !important;
+    clip-path: none !important;
+    object-fit: cover !important;
 }
