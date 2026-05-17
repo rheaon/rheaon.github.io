@@ -7,7 +7,7 @@
   <body>
     <button id="skinBtn">切换皮肤</button>
     <p id="liveTime"></p>
-    <p class="update-time">📅 最后更新：2026年5月5日18时</p>
+    <p class="update-time">📅 最后更新：2026年5月17日14时</p>
     <img src="头像.png" alt="头像" />
     <a href="https://github.com/Rheaon" class="github-link"
       >点我跳转GitHub主页</a
@@ -32,7 +32,25 @@
         <span class="hobby-item" data-target="fanjuDetail">番/剧</span>
       </p>
     </div>
-
+    <!-- 可折叠天气组件 -->
+    <div class="weather-card" id="weatherCard">
+      <div class="weather-header" id="weatherHeader">
+        <div class="weather-compact">
+          <span class="weather-small-icon" id="weatherSmallIcon">☁️</span>
+          <span class="weather-small-temp" id="weatherSmallTemp">--°C</span>
+          <span class="weather-small-city" id="weatherSmallCity"
+            >加载中...</span
+          >
+          <span class="weather-expand-btn" id="weatherExpandBtn">▼</span>
+        </div>
+      </div>
+      <div class="weather-detail" id="weatherDetail" style="display: none">
+        <div class="weather-info" id="weatherInfo">
+          <div class="weather-loading">加载详细天气...</div>
+        </div>
+        <button id="refreshWeatherBtn" class="weather-refresh">刷新天气</button>
+      </div>
+    </div>
     <div
       id="fanjuDetail"
       style="
@@ -45,7 +63,9 @@
       "
     >
       <strong>📺 最近在看的番/剧</strong><br />
-      <p>《正相反的你和我》真的很甜呀，在来回的高铁上看，时间一会就过去了</p>
+      <p>
+        《春夏秋冬代行者》虽然说风评不是很好啦，但是画面还蛮好看的哦，我还是会看下去的
+      </p>
       <p>
         ---------<br />最近看的番还是挺多的，差不多都是新番啦，《尖帽子的魔法工坊》的画面真的很好哦
       </p>
@@ -77,15 +97,38 @@
       "
     >
       <strong> 🎮最近在玩的游戏</strong><br />
-      <p>深蓝互娱我对你很失望，不打算玩了</p>
-      <p></p>
+      <p>奇迹暖暖也是十一周年了，我果然还是喜欢玩换装游戏啊！</p>
+      ---------<br />
+      <p>
+        电弧终于精二了，我也是打了很久界园才入门哈，好玩，就是什么时候让我过一下n3？
+      </p>
     </div>
     <!--<p>✨ 你是第 <span id="visitCount">0</span> 位访客 ✨</p>-->
-    <div class="today-recommend">
-      <h3>🎵 今日推荐</h3>
+    <!--<div class="today-recommend">
+      <h3>🎵 近日推荐</h3>
       <p id="dailyRecommend">
-        《ヒッチコック》（希区柯克）<br />"只想看着蓝天，也是一种任性吗？"
+        《The Bird Song》<br />"She was the bird, I was the narrow"<br />这首歌真的很好听！
       </p>
+    </div>-->
+
+    <!-- 正在听的音乐卡片 -->
+    <div class="music-card">
+      <h3>🎧 正在听</h3>
+      <div class="music-cover-wrapper">
+        <img class="music-cover-img" id="musicCoverImg" src="" alt="专辑封面" />
+      </div>
+      <div class="music-info">
+        <div class="music-title" id="musicTitle">加载中...</div>
+        <div class="music-artist" id="musicArtist"></div>
+      </div>
+      <div class="music-review" id="musicReview">
+        <!-- 我的评语会显示在这里 -->
+      </div>
+      <div class="music-controls">
+        <button id="prevMusicBtn" class="music-btn">⏮️ 上一首</button>
+        <button id="randomMusicBtn" class="music-btn">🎲 随机</button>
+        <button id="nextMusicBtn" class="music-btn">下一首 ⏭️</button>
+      </div>
     </div>
 
     <div class="message-board">
