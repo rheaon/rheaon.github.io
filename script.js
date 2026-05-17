@@ -844,7 +844,7 @@ function translateWeatherDesc(desc) {
             artist: "JVKE",
             cover: "歌曲/her.jpg",
             review: "I didn't know what I was looking for,till I found her."
-
+        }
     ];
     
     let currentIndex = 0;
