@@ -31,7 +31,7 @@ img {
 .github-link{background: lightpink;}
 .note {font-size: 14px;color: grey;}
 body.dark .note {color: #ccc;}
-    h1 {color: hotpink;}
+    h1 {color: lightpink;}
     hr {
     width: 250px;
     border-top: 3px solid pink;
@@ -49,7 +49,7 @@ body.dark .note {color: #ccc;}
 body.dark .info-card {background: #3a3a3a;color: #fff;}
     .info-card p { color: #555;}
     body.dark .info-card p {color: #eee;}
-    .info-card h2 {color: palevioletred;}
+    .info-card h2 {color: lightpink;}
 body.dark .info-card h2 { color: #ffb6c1;}
 
 /*切换皮肤*/
@@ -522,13 +522,13 @@ body.dark .weather-refresh {
     transition: all 0.3s ease;
     text-align: center;
     backdrop-filter: blur(4px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    
 }
 
 body.dark .music-card {
     background: #3a3a3a;
     color: #fff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    
 }
 
 .music-card h3 {
@@ -637,16 +637,19 @@ body.dark .music-btn:hover {
     color: #666;
     margin-top: 12px;
     padding: 10px;
-    background: rgba(255, 255, 255, 0.4);
+    background: #f6e1e1;
     border-radius: 16px;
     font-style: italic;
     line-height: 1.5;
     text-align: left;
+    transition: all 0.3s ease;
+    
 }
 
 body.dark .music-review {
     color: #ddd;
-    background: rgba(255, 255, 255, 0.1);
+    background: #4a4a4a;
+    transition: all 0.3s ease;
 }
 
 /* 手机适配 */
@@ -684,3 +687,45 @@ body.dark .music-review {
     clip-path: none !important;
     object-fit: cover !important;
 }
+/* 夜间模式 - 统一所有卡片背景色 */
+body.dark .info-card,
+body.dark .music-card,
+body.dark .weather-card,
+body.dark .today-recommend,
+body.dark .message-board {
+    background: #3a3a3a !important;
+}
+
+/* 留言板内部留言条 */
+body.dark .msg-item {
+    background: #4a4a4a !important;
+}
+
+/* 留言板输入框 */
+body.dark .message-board input,
+body.dark .message-board textarea {
+    background: #555 !important;
+    color: #fff !important;
+    border: 1px solid #666 !important;
+}
+
+/* 发送按钮 - 粉色 */
+body.dark .message-board button {
+    background: #ff6b6b !important;
+    color: white !important;
+}
+
+/* 删除按钮 - 保持原来的红色 🔴 */
+body.dark .msg-item button {
+    background: #ff6b6b !important;
+    color: white !important;
+}
+
+/* 删除按钮 hover 效果 */
+body.dark .msg-item button:hover {
+    background: #ff4444 !important;
+}
+body {
+    animation: gradientBG 10s ease infinite;
+}
+
