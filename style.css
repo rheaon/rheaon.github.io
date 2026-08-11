@@ -23,10 +23,11 @@ img {
     }
 .github-link,.email-link {
     display: inline-block;
-    : 10px 20px;
+    padding: 10px 20px;
     color: white;
     text-decoration: none;
-    border-radius: 8px;}
+    border-radius: 8px;
+    font-size: 15px;}
 .email-link{background: lightblue;border:none;}
 .github-link{background: lightpink;}
 .note {font-size: 14px;color: grey;}
@@ -56,11 +57,12 @@ body.dark .info-card h2 { color: #ffb6c1;}
 /* 切换皮肤按钮 - 固定定位，跟随滚动 */
 #skinBtn {
     display: inline-block;
-    : 10px 20px;
+    padding: 10px 20px;
     background: pink;
     color: white;
     text-decoration: none;
     border-radius: 8px;
+    font-size: 16px;
     position: fixed;  /* 改成 fixed，跟随滚动 */
     top: 20px;        /* 距离顶部20px */
     left: 20px;       /* 距离左边20px */
@@ -744,7 +746,7 @@ body {
 }
 
 .msg-category {
-    width: 48%;
+    width: 50%;
 }
 #categoryInput {
     width: 90%;
