@@ -7,7 +7,7 @@
   <body>
     <button id="skinBtn">切换皮肤</button>
     <p id="liveTime"></p>
-    <p class="update-time">📅 最后更新：2026年5月23日19时</p>
+    <p class="update-time">📅 最后更新：2026年8月11日15时</p>
     <img src="头像.png" alt="头像" />
     <a href="https://github.com/Rheaon" class="github-link"
       >点我跳转GitHub主页</a
@@ -17,7 +17,7 @@
     >
     <p class="note"></p>
     <h1>你好，这是我的个人网站</h1>
-    <p>我正在学习做网站～我目前还什么都不会，看看我能学成什么样吧</p>
+    <p>目前是作为我的日常碎碎念记录网站</p>
 
     <hr />
 
@@ -45,11 +45,9 @@
       "
     >
       <strong>📺 最近在看的番/剧</strong><br />
+      <p>《Re:0》经典老番，爱昴TV，昴真的有点太惨了，令人怜爱</p>
       <p>
-        《春夏秋冬代行者》虽然说风评不是很好啦，但是画面还蛮好看的哦，我还是会看下去的
-      </p>
-      <p>
-        ---------<br />最近看的番还是挺多的，差不多都是新番啦，《尖帽子的魔法工坊》的画面真的很好哦，但是这个剧情是不是有点老套了，有点看不下去了
+        ---------<br />《恶女不才》目前还只看了几集，很经典的套路了哈哈哈哈哈
       </p>
     </div>
     <div
@@ -64,9 +62,7 @@
       "
     >
       <strong>📕最近在看的书</strong><br />
-      <p>
-        最近看了《傲慢与偏见》，我是看了电影之后来看书的，书都是初中买的了，一直没有看，最近才看完。看了快两周吧，睡前读物。
-      </p>
+      <p>没有怎么看书了</p>
       <p>大家都要幸福哦~</p>
     </div>
     <div
@@ -81,10 +77,10 @@
       "
     >
       <strong> 🎮最近在玩的游戏</strong><br />
-      <p>奇迹暖暖也是十一周年了，我果然还是喜欢玩换装游戏啊！</p>
+      <p>买了switch，动森很好玩，我要邀请更多的小动物来玩</p>
       ---------<br />
       <p>
-        又玩了一下p5r，宫殿可不可以跳过啊！我真的不想打宫殿，要打好多怪，龙司还没有coop7。
+        入了日乙的坑，还有好多卡带在路上，真的离我太远了，为什么我不能住在香港呢哈哈哈哈哈
       </p>
     </div>
     <!--<p>✨ 你是第 <span id="visitCount">0</span> 位访客 ✨</p>-->
@@ -135,12 +131,29 @@
 
     <div class="message-board">
       <h3>留言板 💬</h3>
+      <div class="name-category">
+        <input id="nameInput" placeholder="你的名字" />
 
-      <input id="nameInput" placeholder="你的名字" />
+        <select id="categoryInput">
+          <option value="日常">日常</option>
+          <option value="日乙">日乙</option>
+        </select>
+      </div>
       <textarea id="contentInput" placeholder="想说什么..."></textarea>
       <button onclick="submitMessage()">发送</button>
 
-      <div id="msgList"></div>
+      <!--留言板分两栏-->
+      <div class="msg-columns">
+        <div class="msg-category">
+          <h4>🌸日常</h4>
+          <div id="dailyList"></div>
+        </div>
+
+        <div class="msg-category">
+          <h4>🎮日乙</h4>
+          <div id="otomeList"></div>
+        </div>
+      </div>
     </div>
     <div id="toastMsg">邮箱已复制~</div>
     <!--返回顶部-->

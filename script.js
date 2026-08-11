@@ -113,12 +113,13 @@ backBtn.onclick = function() {
 ///////////////// Supabase 留言板 /////////////////
 
 let currentPage = 1;
-const pageSize = 5;  // 每页显示5条留言
+const pageSize = 10;  // 每页显示10条留言
 let totalMessages = 0; 
 
 async function submitMessage() {
     let name = document.getElementById("nameInput").value;
     let content = document.getElementById("contentInput").value;
+    let category = document.getElementById("categoryInput").value;
 
     if (!name || !content) {
         showToast("请填写名字和留言内容~");
@@ -133,7 +134,7 @@ async function submitMessage() {
                 "apikey": SUPABASE_KEY,
                 "Authorization": "Bearer " + SUPABASE_KEY
             },
-            body: JSON.stringify({ name, content })
+            body: JSON.stringify({ name, content,category })
         });
 
         if (response.ok) {
@@ -173,29 +174,42 @@ async function loadMessages() {
         );
 
         let data = await res.json();
-        let html = "";
+        let dailyHtml="";
+        let otomeHtml="";
 
         for (let msg of data) {
             let time = msg.created_at ? new Date(msg.created_at).toLocaleString() : "刚刚";
             
-            html += `
+            let messageHTML = `
             <div class="msg-item" style="background: #f5f5f5; margin: 10px 0; padding: 12px; border-radius: 12px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                     <strong style="color: #ff69b4;">💬 ${escapeHtml(msg.name)}</strong>
                     <span style="font-size: 12px; color: #999;">${time}</span>
                 </div>
-                <div style="margin: 8px 0; color: #333;">${escapeHtml(msg.content)}</div>
-                <button onclick="deleteMessage('${msg.id}')" style="background: #ff6b6b; color: white; border: none; border-radius: 6px; padding: 4px 12px; cursor: pointer; font-size: 12px;">删除</button>
-            </div>`;
+
+                <div style="margin: 8px 0; color: #333;">
+                    ${escapeHtml(msg.content)}
+                </div>
+
+                <button onclick="deleteMessage('${msg.id}')">
+                    删除
+                </button>
+            </div>`; 
+            if (msg.category === "日乙") {
+            otomeHtml += messageHTML;
+            } else {
+                dailyHtml += messageHTML;
+            }
+            
+            
         }
 
         if (data.length === 0) {
             html = '<div style="text-align: center; color: #999; padding: 20px;">暂无留言，来抢沙发吧~ ✨</div>';
         }
 
-        document.getElementById("msgList").innerHTML = html;
-        
-        // 4. 添加分页按钮
+        document.getElementById("dailyList").innerHTML = dailyHtml;
+        document.getElementById("otomeList").innerHTML = otomeHtml;
         addPaginationControls();
         
     } catch (error) {
@@ -204,26 +218,26 @@ async function loadMessages() {
     }
 }
 
-// 添加分页按钮
+
 function addPaginationControls() {
     let totalPages = Math.ceil(totalMessagesCount / pageSize);
     
-    // 移除旧的分页控件
+    
     let oldControls = document.getElementById("paginationControls");
     if (oldControls) {
         oldControls.remove();
     }
     
-    // 创建分页控件
+    
     let paginationDiv = document.createElement("div");
     paginationDiv.id = "paginationControls";
     paginationDiv.style.cssText = `
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 15px;
-        margin-top: 20px;
-        padding: 10px;
+        gap: 15px ;
+        margin-top : 20px;
+        padding: 10px ;
     `;
     
     // 上一页按钮
@@ -941,7 +955,8 @@ function translateWeatherDesc(desc) {
     
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
-    } else {
+    }
+     else {
         init();
     }
-})();
+})();  
