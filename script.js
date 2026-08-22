@@ -165,7 +165,7 @@ async function loadMessages() {
         
         // 3. 分页获取留言
         let res = await fetch(
-            SUPABASE_URL + `/rest/v1/messages?select=*&order=created_at.desc&limit=${pageSize}&offset=${start}`,
+            SUPABASE_URL + `/rest/v1/messages?select=*&order=created_at.desc`,
             {
                 headers: {
                     "apikey": SUPABASE_KEY
@@ -176,8 +176,15 @@ async function loadMessages() {
         let data = await res.json();
         let dailyHtml="";
         let otomeHtml="";
+        let dailyMessages = data.filter(msg => msg.category !== "娱乐");
+        let entertainmentMessages = data.filter(msg => msg.category === "娱乐");
 
-        for (let msg of data) {
+        
+
+        let dailyPageMessages = dailyMessages.slice(start, start + pageSize);
+        let entertainmentPageMessages = entertainmentMessages.slice(start, start + pageSize);
+
+        for (let msg of dailyPageMessages) {
             let time = msg.created_at ? new Date(msg.created_at).toLocaleString() : "刚刚";
             
             let messageHTML = `
@@ -195,13 +202,28 @@ async function loadMessages() {
                     删除
                 </button>
             </div>`; 
-            if (msg.category === "日乙") {
+            dailyHtml += messageHTML;
+            
+        }
+        for (let msg of entertainmentPageMessages) {
+            let time = msg.created_at ? new Date(msg.created_at).toLocaleString() : "刚刚";
+            
+            let messageHTML = `
+            <div class="msg-item" style="background: #f5f5f5; margin: 10px 0; padding: 12px; border-radius: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <strong style="color: #ff69b4;">💬 ${escapeHtml(msg.name)}</strong>
+                    <span style="font-size: 12px; color: #999;">${time}</span>
+                </div>
+
+                <div style="margin: 8px 0; color: #333;">
+                    ${escapeHtml(msg.content)}
+                </div>
+
+                <button onclick="deleteMessage('${msg.id}')">
+                    删除
+                </button>
+            </div>`; 
             otomeHtml += messageHTML;
-            } else {
-                dailyHtml += messageHTML;
-            }
-            
-            
         }
 
         if (data.length === 0) {
