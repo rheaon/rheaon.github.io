@@ -274,9 +274,7 @@ function generateTags(content) {
         "朋友": ["朋友", "同学", "闺蜜", "好友", "fxy","yst","wq","花久泪"],
         "家人": ["妈妈", "爸爸", "家人","小花子", "姐姐", "hzh", "何子涵"],
         "游戏": ["游戏", "打游戏", "动森", "steam", "game","switch","舟","p5","暖暖","恋与"],
-        "家": ["大汾", "沙发", "家里", "", ""],
-        "娱乐": ["番", "听歌", "演唱会", "", ""],
-        "上班": ["公司", "", "", "", ""],
+        "娱乐": ["番", "听歌", "演唱会"],
         "穿越": ["皇帝", "太监", "当老师", "第三视角", "杀","四叔","怀孕"],
         "网站": ["网站", "网页", "GitHub", "代码", "程序", "Supabase"],
         "情感": ["表白","女朋友","结婚","分手"],
@@ -327,5 +325,36 @@ async function fixOldTags(){
         }
     }
     alert("旧梦境标签补完！共更新 " + count + " 条");
+    loadDreams();
+}
+async function rebuildAllTags(){
+    const { data: dreams, error } = await supabaseClient
+        .from("dreams")
+        .select("id, content");
+    if(error){
+        console.log(error);
+        alert("读取梦境失败：" + error.message);
+        return;
+    }
+    if(!dreams || dreams.length === 0){
+        alert("没有找到梦境");
+        return;
+    }
+    let count = 0;
+    for(const dream of dreams){
+        const tags = generateTags(dream.content || "");
+        const { error } = await supabaseClient
+            .from("dreams")
+            .update({
+                tags: tags.join(",")
+            })
+            .eq("id", dream.id);
+        if(error){
+            console.log("更新失败：", dream.id, error);
+        }else{
+            count++;
+        }
+    }
+    alert("标签重新生成完成！共更新 " + count + " 条梦境");
     loadDreams();
 }
