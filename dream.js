@@ -163,7 +163,6 @@ return;
 let dreams = parseDreamText(text);
 for(let dream of dreams){ 
 const tags = generateTags(dream.content);
-const tags = generateTags(dream.content);
 await supabaseClient 
 .from("dreams") 
 .insert({ 
