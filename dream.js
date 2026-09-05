@@ -61,10 +61,12 @@ box.innerHTML += `
     <h2 class="dream-title">${dream.title}</h2>
     <p class="dream-content">${dream.content}</p>
     <div class="dream-tags">
-        ${dream.tags && dream.tags.length
-            ? dream.tags.map(tag => `#${tag}`).join(" ")
-            : ""}
-    </div>
+    ${
+        dream.tags
+            ? dream.tags.split(",").map(tag => `#${tag}`).join(" ")
+            : ""
+    }
+</div>
 </div>
 `;
 });
@@ -132,7 +134,7 @@ const {error}=await supabaseClient
     date:date, 
     title:title, 
     content:content, 
-    tags:tags, 
+    tags:tags.join(","), 
     user_id:user.id 
 });
 if(error){
@@ -161,15 +163,16 @@ return;
 let dreams = parseDreamText(text);
 for(let dream of dreams){ 
 const tags = generateTags(dream.content);
+const tags = generateTags(dream.content);
 await supabaseClient 
 .from("dreams") 
 .insert({ 
-    date:dream.date, 
-    title:dream.title, 
-    content:dream.content, 
-    tags:tags,
-    user_id:user.id 
-}); 
+    date: dream.date,
+    title: dream.title,
+    content: dream.content,
+    tags: tags.join(","),
+    user_id: user.id
+});
 }
 alert(
 "导入完成，共 "+dreams.length+" 条"
