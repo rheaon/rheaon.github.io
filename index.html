@@ -1,13 +1,18 @@
 <!doctype html>
 <html>
   <head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/wpwebplayer@1.1.5/min-css.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/wpwebplayer@1.1.5/min-js.js"></script>
     <title>我的个人网站✨</title>
   </head>
   <link rel="stylesheet" href="style.css" />
   <body>
     <button id="skinBtn">切换皮肤</button>
     <p id="liveTime"></p>
-    <p class="update-time">📅 最后更新：2026年8月11日15时</p>
+    <p class="update-time">📅 最后更新：2026年9月5日15时</p>
     <img src="头像.png" alt="头像" />
     <a href="https://github.com/Rheaon" class="github-link"
       >点我跳转GitHub主页</a
@@ -19,9 +24,7 @@
     <p class="note"></p>
     <h1>你好，这是我的个人网站</h1>
     <p>目前是作为我的日常碎碎念记录网站</p>
-
     <hr />
-
     <div class="info-card">
       <h2>我的个人信息</h2>
       <p>昵称：风风</p>
@@ -33,7 +36,6 @@
         <span class="hobby-item" data-target="fanjuDetail">番/剧</span>
       </p>
     </div>
-
     <div
       id="fanjuDetail"
       style="
@@ -46,10 +48,11 @@
       "
     >
       <strong>📺 最近在看的番/剧</strong><br />
-      <p>《Re:0》经典老番，爱昴TV，昴真的有点太惨了，令人怜爱</p>
       <p>
-        ---------<br />《恶女不才》目前还只看了几集，很经典的套路了哈哈哈哈哈
+        《Re:0》经典老番，爱昴TV，昴真的有点太惨了，令人怜爱。不过最新一集真的很帅欸！
       </p>
+      ---------<br />
+      <p>《恶女不才》目前还只看了几集，很经典的套路了哈哈哈哈哈</p>
     </div>
     <div
       id="musicDetail"
@@ -63,7 +66,7 @@
       "
     >
       <strong>📕最近在看的书</strong><br />
-      <p>没有怎么看书了</p>
+      <p>没有怎么看书了，还是更喜欢纸质书啦，电子书不太有兴趣</p>
       <p>大家都要幸福哦~</p>
     </div>
     <div
@@ -78,11 +81,11 @@
       "
     >
       <strong> 🎮最近在玩的游戏</strong><br />
-      <p>买了switch，动森很好玩，我要邀请更多的小动物来玩</p>
-      ---------<br />
       <p>
-        入了日乙的坑，还有好多卡带在路上，真的离我太远了，为什么我不能住在香港呢哈哈哈哈哈
+        舟和p3联动了，唉迷宫和爬塔太坐牢了，我真不知道我什么时候才能把p5r打完
       </p>
+      ---------<br />
+      <p>这个无限暖暖我也是又开始活跃了，做的衣服太好看了呜呜呜</p>
     </div>
     <!--<p>✨ 你是第 <span id="visitCount">0</span> 位访客 ✨</p>-->
     <!--<div class="today-recommend">
@@ -110,11 +113,22 @@
         <button id="refreshWeatherBtn" class="weather-refresh">刷新天气</button>
       </div>
     </div>
+    <!-- 放在 .music-card 附近 -->
+    <audio id="audioPlayer" src=""></audio>
     <!-- 正在听的音乐卡片 -->
     <div class="music-card">
       <h3>🎧 正在听</h3>
       <div class="music-cover-wrapper">
         <img class="music-cover-img" id="musicCoverImg" src="" alt="专辑封面" />
+      </div>
+      <div style="margin: 10px 0">
+        <button
+          id="playBtn"
+          class="music-btn"
+          style="font-size: 24px; padding: 8px 24px; border-radius: 30px"
+        >
+          START
+        </button>
       </div>
       <div class="music-info">
         <div class="music-title" id="musicTitle">加载中...</div>
@@ -129,12 +143,10 @@
         <button id="nextMusicBtn" class="music-btn">下一首 ⏭️</button>
       </div>
     </div>
-
     <div class="message-board">
       <h3>留言板 💬</h3>
       <div class="name-category">
         <input id="nameInput" placeholder="你的名字" />
-
         <select id="categoryInput">
           <option value="日常">日常</option>
           <option value="娱乐">娱乐</option>
@@ -142,14 +154,12 @@
       </div>
       <textarea id="contentInput" placeholder="想说什么..."></textarea>
       <button onclick="submitMessage()">发送</button>
-
       <!--留言板分两栏-->
       <div class="msg-columns">
         <div class="msg-category">
           <h4>🌸日常</h4>
           <div id="dailyList"></div>
         </div>
-
         <div class="msg-category">
           <h4>🎮娱乐</h4>
           <div id="otomeList"></div>
@@ -179,6 +189,5 @@
   <!---->
   <p id="randomQuote">✨ 今日一言 ✨</p>
   <button id="quoteBtn">换一句</button>
-
   <script src="script.js"></script>
 </html>

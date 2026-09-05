@@ -1,23 +1,19 @@
 const SUPABASE_URL = "https://lzubeowxtlqmtypzgxrv.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6dWJlb3d4dGxxbXR5cHpneHJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NzYxOTgsImV4cCI6MjA5MTQ1MjE5OH0.Fsjs0ZqdJ5V-cdkdLAgJxgwKpUHEp3kO4MIRnhy7pEo";
-
 // JavaScript source code
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("skinBtn").onclick = () => {
         document.body.classList.toggle("dark");
     };
-
     // 这里也把其他按钮绑定事件放进来
     document.getElementById("copyEmailBtn").onclick = copyEmail;
     document.getElementById("quoteBtn").onclick = changeQuote;
 });
-
 ////////////
 let btn = document.getElementById('skinBtn');
 btn.onclick = function() {
     document.body.classList.toggle('dark');
 }
-
 let copyBtn = document.getElementById('copyEmailBtn');
 copyBtn.onclick = function() {
     let email = 'rheaon@qq.com';
@@ -29,8 +25,6 @@ copyBtn.onclick = function() {
         toast.classList.remove('show');
     }, 2000);
 }
-
-
 /////////////////////////每日一句//////////////////////////////
 let quotes = [
     "✨ 且将新火试新茶，诗酒趁年华 ✨",
@@ -45,7 +39,6 @@ quoteBtn.onclick = function() {
     let randomIndex = Math.floor(Math.random() * quotes.length);
     quoteP.innerHTML = quotes[randomIndex];
 }
-
 let visitCount = localStorage.getItem('visitCount');
 if (visitCount === null) {
     visitCount = 1;
@@ -56,15 +49,11 @@ localStorage.setItem('visitCount', visitCount);
 if (document.getElementById('visitCount')) {
     document.getElementById('visitCount').innerText = visitCount;
 }
-
-
 let hobbyItems = document.querySelectorAll('.hobby-item');
-
 for (let i = 0; i < hobbyItems.length; i++) {
     hobbyItems[i].onclick = function() {
         let targetId = this.getAttribute('data-target');
         let target = document.getElementById(targetId);
-        
         if (target.style.display === 'none') {
             target.style.display = 'block';
         } else {
@@ -94,10 +83,8 @@ if (msgCountSpan) {
 msgCountSpan.innerText = count;
 }
 }
-
 ///////////////////////返回顶部///////////////////////
 let backBtn = document.getElementById('backToTop');
-
 window.onscroll = function() {
     if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
         backBtn.style.display = 'block';
@@ -105,27 +92,22 @@ window.onscroll = function() {
         backBtn.style.display = 'none';
     }
 }
-
 backBtn.onclick = function() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 /////////////////
 ///////////////// Supabase 留言板 /////////////////
-
 let currentPage = 1;
 const pageSize = 10;  // 每页显示10条留言
 let totalMessages = 0; 
-
 async function submitMessage() {
     let name = document.getElementById("nameInput").value;
     let content = document.getElementById("contentInput").value;
     let category = document.getElementById("categoryInput").value;
-
     if (!name || !content) {
         showToast("请填写名字和留言内容~");
         return;
     }
-
     try {
         let response = await fetch(SUPABASE_URL + "/rest/v1/messages", {
             method: "POST",
@@ -136,7 +118,6 @@ async function submitMessage() {
             },
             body: JSON.stringify({ name, content,category })
         });
-
         if (response.ok) {
             document.getElementById("contentInput").value = "";
             document.getElementById("nameInput").value = "";
@@ -159,10 +140,8 @@ async function loadMessages() {
         });
         let allData = await countRes.json();
         totalMessagesCount = allData.length;
-        
         // 2. 计算偏移量
         let start = (currentPage - 1) * pageSize;
-        
         // 3. 分页获取留言
         let res = await fetch(
             SUPABASE_URL + `/rest/v1/messages?select=*&order=created_at.desc`,
@@ -172,85 +151,64 @@ async function loadMessages() {
                 }
             }
         );
-
         let data = await res.json();
         let dailyHtml="";
         let otomeHtml="";
         let dailyMessages = data.filter(msg => msg.category !== "娱乐");
         let entertainmentMessages = data.filter(msg => msg.category === "娱乐");
-
-        
-
         let dailyPageMessages = dailyMessages.slice(start, start + pageSize);
         let entertainmentPageMessages = entertainmentMessages.slice(start, start + pageSize);
-
         for (let msg of dailyPageMessages) {
             let time = msg.created_at ? new Date(msg.created_at).toLocaleString() : "刚刚";
-            
             let messageHTML = `
             <div class="msg-item" style="background: #f5f5f5; margin: 10px 0; padding: 12px; border-radius: 12px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                     <strong style="color: #ff69b4;">💬 ${escapeHtml(msg.name)}</strong>
                     <span style="font-size: 12px; color: #999;">${time}</span>
                 </div>
-
                 <div style="margin: 8px 0; color: #333;">
                     ${escapeHtml(msg.content)}
                 </div>
-
                 <button onclick="deleteMessage('${msg.id}')">
                     删除
                 </button>
             </div>`; 
             dailyHtml += messageHTML;
-            
         }
         for (let msg of entertainmentPageMessages) {
             let time = msg.created_at ? new Date(msg.created_at).toLocaleString() : "刚刚";
-            
             let messageHTML = `
             <div class="msg-item" style="background: #f5f5f5; margin: 10px 0; padding: 12px; border-radius: 12px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                     <strong style="color: #ff69b4;">💬 ${escapeHtml(msg.name)}</strong>
                     <span style="font-size: 12px; color: #999;">${time}</span>
                 </div>
-
                 <div style="margin: 8px 0; color: #333;">
                     ${escapeHtml(msg.content)}
                 </div>
-
                 <button onclick="deleteMessage('${msg.id}')">
                     删除
                 </button>
             </div>`; 
             otomeHtml += messageHTML;
         }
-
         if (data.length === 0) {
             html = '<div style="text-align: center; color: #999; padding: 20px;">暂无留言，来抢沙发吧~ ✨</div>';
         }
-
         document.getElementById("dailyList").innerHTML = dailyHtml;
         document.getElementById("otomeList").innerHTML = otomeHtml;
         addPaginationControls();
-        
     } catch (error) {
         console.error("加载留言出错:", error);
         document.getElementById("msgList").innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">加载留言失败，请刷新重试</div>';
     }
 }
-
-
 function addPaginationControls() {
     let totalPages = Math.ceil(totalMessagesCount / pageSize);
-    
-    
     let oldControls = document.getElementById("paginationControls");
     if (oldControls) {
         oldControls.remove();
     }
-    
-    
     let paginationDiv = document.createElement("div");
     paginationDiv.id = "paginationControls";
     paginationDiv.style.cssText = `
@@ -261,7 +219,6 @@ function addPaginationControls() {
         margin-top : 20px;
         padding: 10px ;
     `;
-    
     // 上一页按钮
     let prevBtn = document.createElement("button");
     prevBtn.textContent = "⬅ 上一页";
@@ -285,7 +242,6 @@ function addPaginationControls() {
             loadMessages();
         }
     };
-    
     // 页码显示
     let pageSpan = document.createElement("span");
     pageSpan.textContent = `第 ${currentPage} / ${totalPages || 1} 页`;
@@ -293,7 +249,6 @@ function addPaginationControls() {
         color: #666;
         font-size: 14px;
     `;
-    
     // 下一页按钮
     let nextBtn = document.createElement("button");
     nextBtn.textContent = "下一页 ➡";
@@ -317,19 +272,15 @@ function addPaginationControls() {
             loadMessages();
         }
     };
-    
     paginationDiv.appendChild(prevBtn);
     paginationDiv.appendChild(pageSpan);
     paginationDiv.appendChild(nextBtn);
-    
     // 添加到留言板
     let msgBoard = document.querySelector('.message-board');
     msgBoard.appendChild(paginationDiv);
 }
-
 async function deleteMessage(id) {
     if (!confirm("确定要删除这条留言吗？")) return;
-    
     try {
         let response = await fetch(SUPABASE_URL + "/rest/v1/messages?id=eq." + id, {
             method: "DELETE",
@@ -338,7 +289,6 @@ async function deleteMessage(id) {
                 "Authorization": "Bearer " + SUPABASE_KEY
             }
         });
-
         if (response.ok) {
             showToast("留言已删除");
             // 重新获取总数
@@ -348,7 +298,6 @@ async function deleteMessage(id) {
             let allData = await countRes.json();
             let newTotal = allData.length;
             let totalPages = Math.ceil(newTotal / pageSize);
-            
             // 如果当前页没有数据了且不是第一页，跳到上一页
             if (currentPage > totalPages && currentPage > 1) {
                 currentPage--;
@@ -362,7 +311,6 @@ async function deleteMessage(id) {
         showToast("删除失败，请稍后再试");
     }
 }
-
 // 辅助函数：防止XSS攻击
 function escapeHtml(text) {
     if (!text) return "";
@@ -373,7 +321,6 @@ function escapeHtml(text) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#39;");
 }
-
 // 显示提示信息
 function showToast(msg) {
     let toast = document.getElementById('toastMsg');
@@ -384,19 +331,16 @@ function showToast(msg) {
         toast.classList.remove('show');
     }, 2000);
 }
-
 // 补充缺失的函数
 function copyEmail() {
     let email = '3253808852@qq.com';
     navigator.clipboard.writeText(email);
     showToast('邮箱已复制~');
 }
-
 function changeQuote() {
     let randomIndex = Math.floor(Math.random() * quotes.length);
     quoteP.innerHTML = quotes[randomIndex];
 }
-
 // 页面加载时获取留言
 document.addEventListener("DOMContentLoaded", function() {
     loadMessages();
@@ -404,7 +348,6 @@ document.addEventListener("DOMContentLoaded", function() {
 // ========================
 // ✨ 鼠标移动小星星特效 ✨
 // ========================
-
 (function() {
     // 星星的颜色池（粉嫩系）
     const colors = [
@@ -416,7 +359,6 @@ document.addEventListener("DOMContentLoaded", function() {
         '#FFA07A', // 亮鲑鱼
         '#FF85B3'  // 樱花粉
     ];
-
     // 创建画布
     let canvas = document.createElement('canvas');
     let ctx = canvas.getContext('2d');
@@ -425,7 +367,6 @@ document.addEventListener("DOMContentLoaded", function() {
     let mouseX = 0, mouseY = 0;
     let lastX = 0, lastY = 0;
     let lastTime = 0;
-
     // 设置画布样式（覆盖全屏，不干扰点击）
     canvas.style.position = 'fixed';
     canvas.style.top = '0';
@@ -435,7 +376,6 @@ document.addEventListener("DOMContentLoaded", function() {
     canvas.style.pointerEvents = 'none';  // 让鼠标可以穿透画布
     canvas.style.zIndex = '9999';
     document.body.appendChild(canvas);
-
     // 星星粒子类
     class StarParticle {
         constructor(x, y, color) {
@@ -448,7 +388,6 @@ document.addEventListener("DOMContentLoaded", function() {
             this.vx = (Math.random() - 0.5) * 2;  // 轻微飘动
             this.vy = (Math.random() - 0.5) * 2 - 0.5; // 轻微向上飘
         }
-
         update() {
             this.x += this.vx;
             this.y += this.vy;
@@ -456,18 +395,15 @@ document.addEventListener("DOMContentLoaded", function() {
             this.size *= 0.98;
             return this.alpha > 0;
         }
-
         draw(ctx) {
             ctx.save();
             ctx.globalAlpha = this.alpha;
             ctx.fillStyle = this.color;
             ctx.beginPath();
-            
             // 画四角星形状 ✨
             let spikes = 4;
             let outerRadius = this.size;
             let innerRadius = this.size * 0.4;
-            
             for (let i = 0; i < spikes * 2; i++) {
                 let radius = i % 2 === 0 ? outerRadius : innerRadius;
                 let angle = (Math.PI * 2 * i) / (spikes * 2) - Math.PI / 4;
@@ -476,13 +412,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (i === 0) ctx.moveTo(x, y);
                 else ctx.lineTo(x, y);
             }
-            
             ctx.closePath();
             ctx.fill();
             ctx.restore();
         }
     }
-
     // 调整画布大小
     function resizeCanvas() {
         canvas.width = window.innerWidth;
@@ -490,20 +424,16 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
-
     // 鼠标移动时生成星星
     document.addEventListener('mousemove', function(e) {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        
         let now = Date.now();
         // 控制生成频率，避免太多星星（每30ms最多一个）
         if (now - lastTime < 30) return;
         lastTime = now;
-        
         // 随机颜色
         let color = colors[Math.floor(Math.random() * colors.length)];
-        
         // 一次生成 1~3 个星星
         let starCount = Math.floor(Math.random() * 2) + 1;
         for (let i = 0; i < starCount; i++) {
@@ -511,20 +441,16 @@ document.addEventListener("DOMContentLoaded", function() {
             let offsetY = (Math.random() - 0.5) * 10;
             particles.push(new StarParticle(mouseX + offsetX, mouseY + offsetY, color));
         }
-        
         // 限制最大粒子数（避免卡顿）
         if (particles.length > 150) {
             particles = particles.slice(-100);
         }
     });
-
     // 动画循环
     function animate() {
         if (!ctx) return;
-        
         // 清空画布（使用透明清除，制造拖尾效果）
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
         // 更新并绘制所有粒子
         for (let i = particles.length - 1; i >= 0; i--) {
             let alive = particles[i].update();
@@ -534,12 +460,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 particles.splice(i, 1);
             }
         }
-        
         animationId = requestAnimationFrame(animate);
     }
-    
     animate();
-    
     // 可选：点击时额外爆出一圈星星
     document.addEventListener('click', function(e) {
         let color = colors[Math.floor(Math.random() * colors.length)];
@@ -581,7 +504,6 @@ function translateWeatherDesc(desc) {
 (async function() {
     // 可以改成你喜欢的城市
     const DEFAULT_CITY = '南京';
-    
     // 天气图标映射
     function getWeatherIcon(weatherCode, isDay) {
         if (weatherCode >= 200 && weatherCode < 300) return '⛈️';
@@ -595,21 +517,17 @@ function translateWeatherDesc(desc) {
         if (weatherCode === 803 || weatherCode === 804) return '☁️';
         return '🌈';
     }
-    
     // 获取天气数据
     async function fetchWeather(city) {
         try {
             const url = `https://wttr.in/${encodeURIComponent(city)}?format=j1&lang=zh`;
             const response = await fetch(url);
             const data = await response.json();
-            
             if (!data || !data.current_condition) {
                 throw new Error('获取天气失败');
             }
-            
             const current = data.current_condition[0];
             const area = data.nearest_area[0];
-            
             return {
                 temp: current.temp_C,
                 desc: current.weatherDesc[0].value,
@@ -624,21 +542,17 @@ function translateWeatherDesc(desc) {
             return null;
         }
     }
-    
     // 备用API
     async function fetchWeatherBackup() {
         try {
             const lat = 32.06;
             const lon = 118.78;
             const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=Asia/Shanghai`;
-            
             const response = await fetch(url);
             const data = await response.json();
-            
             if (!data || !data.current_weather) {
                 throw new Error('获取天气失败');
             }
-            
             const current = data.current_weather;
             let desc = '';
             if (current.temperature > 28) desc = '炎热';
@@ -646,7 +560,6 @@ function translateWeatherDesc(desc) {
             else if (current.temperature > 10) desc = '凉爽';
             else if (current.temperature > 0) desc = '寒冷';
             else desc = '极寒';
-            
             return {
                 temp: Math.round(current.temperature),
                 desc: desc,
@@ -661,13 +574,11 @@ function translateWeatherDesc(desc) {
             return null;
         }
     }
-    
     // 更新紧凑栏（只显示图标、温度、城市）
     function updateCompact(weather) {
         const smallIcon = document.getElementById('weatherSmallIcon');
         const smallTemp = document.getElementById('weatherSmallTemp');
         const smallCity = document.getElementById('weatherSmallCity');
-        
         if (smallIcon && weather) {
             smallIcon.textContent = getWeatherIcon(weather.weatherCode, weather.isDay);
         }
@@ -680,26 +591,20 @@ function translateWeatherDesc(desc) {
             smallCity.textContent = cityName;
         }
     }
-    
     // 更新详细面板
     async function updateDetail() {
         const weatherInfo = document.getElementById('weatherInfo');
         if (!weatherInfo) return;
-        
         weatherInfo.innerHTML = '<div class="weather-loading">🌤️ 加载详细天气...</div>';
-        
         let weather = await fetchWeather(DEFAULT_CITY);
         if (!weather) {
             weather = await fetchWeatherBackup();
         }
-        
         if (!weather) {
             weatherInfo.innerHTML = '<div class="weather-loading">⚠️ 加载失败<br>点击刷新重试</div>';
             return;
         }
-        
         const icon = getWeatherIcon(weather.weatherCode, weather.isDay);
-        
         weatherInfo.innerHTML = `
     <div class="weather-icon">${icon}</div>
     <div class="weather-temp">${weather.temp}°C</div>
@@ -709,10 +614,8 @@ function translateWeatherDesc(desc) {
         💧 湿度 ${weather.humidity}% &nbsp;|&nbsp; 🌬️ 风速 ${weather.windSpeed} km/h
     </div>
 `;
-        
         return weather;
     }
-    
     // 初始化天气（加载紧凑栏和详情）
     async function initWeather() {
         // 先加载紧凑栏数据
@@ -720,32 +623,26 @@ function translateWeatherDesc(desc) {
         if (!weather) {
             weather = await fetchWeatherBackup();
         }
-        
         if (weather) {
             updateCompact(weather);
         } else {
             const smallCity = document.getElementById('weatherSmallCity');
             if (smallCity) smallCity.textContent = '加载失败';
         }
-        
         // 预加载详情（但不显示）
         await updateDetail();
     }
-    
     // 折叠/展开功能
     function setupToggle() {
         const header = document.getElementById('weatherHeader');
         const detail = document.getElementById('weatherDetail');
         const expandBtn = document.getElementById('weatherExpandBtn');
-        
         if (!header || !detail) return;
-        
         header.onclick = function(e) {
             // 防止点到刷新按钮时触发
             if (e.target.classList && e.target.classList.contains('weather-refresh')) {
                 return;
             }
-            
             const isHidden = detail.style.display === 'none';
             if (isHidden) {
                 detail.style.display = 'block';
@@ -756,40 +653,32 @@ function translateWeatherDesc(desc) {
             }
         };
     }
-    
     // 刷新按钮功能
     function setupRefresh() {
         const refreshBtn = document.getElementById('refreshWeatherBtn');
         if (!refreshBtn) return;
-        
         refreshBtn.onclick = async function(e) {
             e.stopPropagation();  // 防止触发折叠
-            
             const oldText = refreshBtn.textContent;
             refreshBtn.textContent = '刷新中...';
-            
             // 刷新详细面板
             const weather = await updateDetail();
             if (weather) {
                 updateCompact(weather);
             }
-            
             setTimeout(() => {
                 refreshBtn.textContent = oldText;
             }, 800);
         };
     }
-    
     // 启动
     function start() {
         const weatherCard = document.getElementById('weatherCard');
         if (!weatherCard) return;
-        
         initWeather();
         setupToggle();
         setupRefresh();
     }
-    
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', start);
     } else {
@@ -799,92 +688,106 @@ function translateWeatherDesc(desc) {
 // ========================
 // 🎵 正在听的音乐卡片（图片封面版）🎵
 // ========================
-
+// ========================
+// 🎵 正在听的音乐卡片（带播放功能）🎵
+// ========================
 (function() {
-    // 你的歌单 - 可以放本地图片路径或网络图片链接
+    // 你的歌单 - 需要加上音频文件路径
     const playlist = [
         {
             title: "The Bird Song",
             artist: "Noah Floersch",
-            cover: "歌曲/The Bird Song.jpg", 
+            cover: "歌曲/The Bird Song.jpg",
+            src: "歌曲/The Bird Song.mp3",  // ← 新增：音频文件路径
             review: "She was a bird, I was an arrow."
         },
         {
             title: "ヒッチコック(希区柯克)",
             artist: "ヨルシカ",
             cover: "歌曲/希区柯克.jpg",
+            src: "歌曲/ヨルシカ - ヒッチコック.mp3",
             review: "无论何时都想被风吹着，只想看着蓝天，也是一种任性吗"
         },
         {
             title: "花鳥風月",
             artist: "SEKI NO OWARI",
-            cover: "歌曲/花鸟风月.jpg",
+            cover: "歌曲/花鳥風月.jpg",
+            src: "歌曲/花鳥風月.mp3",
             review: "夏の空を見上げる"
         },
         {
             title: "再见以前先说再见",
             artist: "陶喆",
             cover: "歌曲/再见以前先说再见.jpg",
+            src: "歌曲/再见以前先说再见.mp3",
             review: "请你给我一个拥抱，为我祝福和祈祷"
         },
         {
-            title: "Creepin' up on You",
-            artist: "Darren Hayes",
-            cover: "歌曲/Creepin' up on You.jpg",
-            review: "No one else can love you like I do."
+            title: "TEST ME",
+            artist: "ちゃんみな",
+            cover: "歌曲/TEST ME.jpg",
+            src: "歌曲/TEST ME.mp3",
+            review: "太美妙了"
         },
         {
-            title: "メガネを外して",
-            artist: "乃紫",
-            cover: "歌曲/相反的你和我.jpg",
-            review: "所有人保持苹果肌扁平！"
+            title: "New Romantics",
+            artist: "Taylor Swift",
+            cover: "歌曲/New Romantics.jpg",
+            src: "歌曲/New Romantics.mp3",
+            review: "The best people in life are free."
         },
         {
-            title: "I LOVE ME!",
-            artist: "友成空",
-            cover: "歌曲/I LOVE ME.jpg",
-            review: "Yeah, I love me."
+            title: "想象之中",
+            artist: "许嵩",
+            cover: "歌曲/想象之中.jpg",
+            src: "歌曲/想象之中.mp3",
+            review: "你没想象中那么恋旧 回忆唤不回你的温柔"
         },
         {
             title: "革命道中 - On The Way",
             artist: "アイナ・ジ・エンド",
             cover: "歌曲/革命道中.jpg",
-            review:"感觉有点中二气息"
+            src: "歌曲/革命道中.mp3",
+            review: "感觉有点中二气息"
         },
         {
-            title: "周末画报",
-            artist: "薛凯琪",
-            cover: "歌曲/周末画报.jpg",
-            review: "犹如周末递来，一张画报"
+            title: "Small Girl",
+            artist: "李泳知",
+            cover: "歌曲/Small Girl.jpg",
+            src: "歌曲/Small Girl.mp3",
+            review: "Would you guarantee?"
         },
         {
             title: "情绪回收站",
             artist: "失落花园_",
             cover: "歌曲/情绪回收站.jpg",
+            src: "歌曲/情绪回收站.mp3",
             review: "纯音乐，请欣赏"
         },
         {
             title: "蝴蝶",
             artist: "陶喆",
             cover: "歌曲/蝴蝶.jpg",
+            src: "歌曲/蝴蝶.mp3",
             review: "每次一见到你，心里好平静"
         },
         {
-            title: "想和你迎着台风去看海",
-            artist: "桑拿猫黑糖/洛天依",
-            cover: "歌曲/想和你迎着台风看海.jpg",
-            review: "我们顶着被风吹乱的头发，一起唱呐呐呐"
+            title: "17さいのうた。（17岁的歌）",
+            artist: "『ユイカ』",
+            cover: "歌曲/17岁的歌.jpg",
+            src: "歌曲/17岁的歌.mp3",
+            review: "每个人的17岁都不一样"
         },
         {
-            title: "her",
+            title: "golden hour",
             artist: "JVKE",
-            cover: "歌曲/her.jpg",
+            cover: "歌曲/JVKE - golden hour.jpg",
+            src: "歌曲/JVKE - golden hour.mp3",
             review: "I didn't know what I was looking for,till I found her."
         }
     ];
-    
     let currentIndex = 0;
-    
+    let isPlaying = false;
     // 获取DOM元素
     const musicTitle = document.getElementById('musicTitle');
     const musicArtist = document.getElementById('musicArtist');
@@ -893,26 +796,34 @@ function translateWeatherDesc(desc) {
     const prevBtn = document.getElementById('prevMusicBtn');
     const nextBtn = document.getElementById('nextMusicBtn');
     const randomBtn = document.getElementById('randomMusicBtn');
-    
-    // 更新显示的音乐
-    function updateMusic(index) {
+    const audio = document.getElementById('audioPlayer');  // ← 获取audio元素
+    // 更新显示的音乐并播放
+    function updateMusic(index, autoPlay = true) {
         const song = playlist[index];
         if (!song) return;
-        
         // 更新封面图片
         if (song.cover) {
             musicCoverImg.src = song.cover;
+            musicCoverImg.style.background = "transparent";
         } else {
-            // 没有图片时的占位
             musicCoverImg.src = '';
             musicCoverImg.style.background = "linear-gradient(135deg, #ffb6c1, #ff69b4)";
         }
-        
         // 更新文字信息
         musicTitle.textContent = song.title;
         musicArtist.textContent = song.artist;
         musicReview.textContent = `“${song.review}”`;
-        
+        // 更新音频
+        if (song.src) {
+            audio.src = song.src;
+            if (autoPlay) {
+                audio.play().catch(() => {
+                    // 浏览器阻止自动播放时，静默处理
+                    console.log('点击播放按钮再播放哦~');
+                });
+                isPlaying = true;
+            }
+        }
         // 添加切换动画
         const card = document.querySelector('.music-card');
         if (card) {
@@ -921,23 +832,29 @@ function translateWeatherDesc(desc) {
                 card.style.transform = 'scale(1)';
             }, 150);
         }
-        
         // 保存当前索引到localStorage
         localStorage.setItem('currentMusicIndex', index);
     }
-    
+    // 切换播放/暂停
+    function togglePlay() {
+        if (audio.paused) {
+            audio.play();
+            isPlaying = true;
+        } else {
+            audio.pause();
+            isPlaying = false;
+        }
+    }
     // 下一首
     function nextMusic() {
         currentIndex = (currentIndex + 1) % playlist.length;
-        updateMusic(currentIndex);
+        updateMusic(currentIndex, true);
     }
-    
     // 上一首
     function prevMusic() {
         currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
-        updateMusic(currentIndex);
+        updateMusic(currentIndex, true);
     }
-    
     // 随机一首
     function randomMusic() {
         let newIndex = Math.floor(Math.random() * playlist.length);
@@ -945,9 +862,8 @@ function translateWeatherDesc(desc) {
             newIndex = Math.floor(Math.random() * playlist.length);
         }
         currentIndex = newIndex;
-        updateMusic(currentIndex);
+        updateMusic(currentIndex, true);
     }
-    
     // 加载上次听的歌
     function loadSavedMusic() {
         const savedIndex = localStorage.getItem('currentMusicIndex');
@@ -956,29 +872,48 @@ function translateWeatherDesc(desc) {
         } else {
             currentIndex = Math.floor(Math.random() * playlist.length);
         }
-        updateMusic(currentIndex);
+        updateMusic(currentIndex, false);  // 不自动播放，等用户点击
     }
-    
     // 绑定事件
-    function bindEvents() {
-        if (prevBtn) prevBtn.onclick = prevMusic;
-        if (nextBtn) nextBtn.onclick = nextMusic;
-        if (randomBtn) randomBtn.onclick = randomMusic;
+    // 绑定事件
+function bindEvents() {
+    if (prevBtn) prevBtn.onclick = prevMusic;
+    if (nextBtn) nextBtn.onclick = nextMusic;
+    if (randomBtn) randomBtn.onclick = randomMusic;
+    // ⭐ 新增：播放按钮
+    const playBtn = document.getElementById('playBtn');
+    if (playBtn) {
+        playBtn.onclick = togglePlay;
     }
-    
+    // 点击封面切换播放/暂停
+    if (musicCoverImg) {
+        musicCoverImg.style.cursor = 'pointer';
+        musicCoverImg.onclick = togglePlay;
+    }
+    // 音频播放结束后自动下一首
+    if (audio) {
+        audio.onended = function() {
+            nextMusic();
+        };
+        // ⭐ 新增：监听播放/暂停状态，更新按钮文字
+        audio.onplay = function() {
+            if (playBtn) playBtn.textContent = 'STOP';
+        };
+        audio.onpause = function() {
+            if (playBtn) playBtn.textContent = 'START';
+        };
+    }
+}
     // 启动
     function init() {
         const musicCard = document.querySelector('.music-card');
         if (!musicCard) return;
-        
         loadSavedMusic();
         bindEvents();
     }
-    
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
-    }
-     else {
+    } else {
         init();
     }
-})();  
+})();

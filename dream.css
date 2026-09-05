@@ -1,291 +1,184 @@
 textarea,
 input {
-
     width: 90%;
     padding: 10px;
     margin: 8px 0;
     border-radius: 10px;
     border: 1px solid pink;
-
 }
-
-
 button {
-
     padding: 10px 15px;
     border-radius: 10px;
     border: none;
     background: pink;
     color: white;
     cursor: pointer;
-
 }
 /* =========================
       梦境档案馆
 ========================= */
-
-
 .dream-page {
-
     width: 90%;
     max-width: 700px;
-
     margin: 20px auto;
-
 }
-
-
 /* 登录、新增、导入区域 */
-
 .dream-box {
-
     background: rgba(255, 255, 255, 0.5);
-
     padding: 20px;
-
     border-radius: 20px;
-
     margin: 20px auto;
-
     transition: all 0.3s ease;
-
     backdrop-filter: blur(4px);
-
 }
-
-
-
 body.dark .dream-box {
-
     background: #3a3a3a;
-
     color: white;
-
 }
-
-
-
 /* 输入框 */
-
 .dream-box input,
 .dream-box textarea,
 .dream-box select {
-
-
     width: 90%;
-
     padding: 10px;
-
     margin: 8px;
-
     border-radius: 10px;
-
     border: 1px solid pink;
-
     background: rgba(255, 255, 255, 0.8);
-
     outline: none;
-
 }
-
-
-
 body.dark .dream-box input,
 body.dark .dream-box textarea,
 body.dark .dream-box select {
-
     background: #555;
-
     color: white;
-
     border: 1px solid #777;
-
 }
-
-
-
 /* 所有按钮 */
 .dream-box button,
 .dream-btn,
 .dream-buttons button {
-
     background: pink;
     color: white;
     border: none;
-
     padding: 10px 20px;
-
     border-radius: 20px;
-
     cursor: pointer;
-
     font-size: 14px;
-
 }
 .dream-buttons {
-
     display: flex;
-
     justify-content: center;
-
     gap: 20px;
-
     margin: 15px 0;
-
 }
-
-
-
 .dream-box button:hover,
 .dream-btn:hover {
-
     transform: translateY(-2px);
-
 }
-
-
-
 /* 梦境卡片 */
-
 .dream-card {
-
-
     background: rgba(255, 255, 255, 0.5);
-
-
     padding: 20px;
-
-
     border-radius: 20px;
-
-
     margin: 20px auto;
-
-
     text-align: left;
-
-
     transition: all 0.3s ease;
-
-
     backdrop-filter: blur(4px);
-
-
 }
-
-
-
 body.dark .dream-card {
-
-
     background: #3a3a3a;
-
     color: white;
-
 }
-
-
-
 /* 日期 */
-
 .dream-date {
-
-
     color: hotpink;
-
     font-size: 14px;
-
 }
-
-
-
 body.dark .dream-date {
-
     color: #ffb6c1;
-
 }
-
-
-
 /* 标题 */
-
 .dream-title {
-
-
     color: #d88c9a;
-
     font-size: 20px;
-
-
 }
-
-
-
 body.dark .dream-title {
-
-
     color: #ffb6c1;
-
-
 }
-
-
-
 /* 正文 */
-
 .dream-content {
-
-
     line-height: 1.8;
-
     white-space: pre-wrap;
-
     color: #555;
-
-
 }
-
-
-
 body.dark .dream-content {
-
-
     color: #eee;
-
-
 }
-
-
-
 /* 月份选择 */
-
 #monthSelect {
-
-
     background: pink;
-
     color: white;
-
     cursor: pointer;
-
-
 }
-
-
-
 body.dark #monthSelect {
-
-
     background: #555;
-
     color: white;
-
-
 }
 .dream-buttons {
     display: flex;
     justify-content: center;
     gap: 15px;
 }
-
-
+/* 梦境列表 - 每条消息紧凑显示 */
+#dreamList .dream-item {
+    background: rgba(255, 255, 255, 0.7);
+    padding: 8px 12px;
+    /* 上下8px，左右12px，比之前小 */
+    margin: 6px 0;
+    /* 条目之间的间距也减小 */
+    border-radius: 10px;
+    font-size: 13px;
+    /* 字体调小 */
+    text-align: left;
+    transition: all 0.3s ease;
+    border-left: 3px solid pink;
+}
+/* 条目里的标题 */
+#dreamList .dream-item .dream-title {
+    font-size: 15px;
+    /* 标题稍微大一点，但还是比原来小 */
+    font-weight: bold;
+    color: #ff69b4;
+    margin-bottom: 0;
+}
+/* 条目里的内容 */
+#dreamList .dream-item .dream-content {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.3;
+    margin: 0;
+}
+/* 条目里的日期 */
+#dreamList .dream-item .dream-date {
+    font-size: 11px;
+    color: #999;
+}
+/* 夜间模式适配 */
+body.dark #dreamList .dream-item {
+    background: #3a3a3a;
+}
+body.dark #dreamList .dream-item .dream-content {
+    color: #ddd;
+}
+body.dark #dreamList .dream-item .dream-date {
+    color: #aaa;
+}
+.dream-tags {
+    margin-top: 12px;
+    color: hotpink;
+    font-size: 14px;
+}
+body.dark .dream-tags {
+    color: #ffb6c1;
+}
