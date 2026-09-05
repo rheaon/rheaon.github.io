@@ -180,34 +180,80 @@ loadMonths();
 loadDreams();
 }
 function parseDreamText(text){
-let lines = text.split("\n");
-let result=[];
-let current=null;
-lines.forEach(line=>{
-line=line.trim();
-if(/^\d{1,2}\.\d{1,2}$/.test(line)){
-if(current){
-result.push(current);
-}
-let parts=line.split(".");
-let month=parts[0].padStart(2,"0");
-let day=parts[1].padStart(2,"0");
-current={
-date:`2026-${month}-${day}`,
-title:`${month}月${day}日的梦`,
-content:""
-};
-}
-else{
-if(current){
-current.content += line+"\n";
-}
-}
-});
-if(current){
-result.push(current);
-}
-return result;
+    let lines = text.split("\n");
+    let result = [];
+    let current = null;
+    // 默认年份
+    let currentYear = new Date().getFullYear();
+    lines.forEach(line => {
+        line = line.trim();
+        // 空行直接跳过
+        if(!line){
+            return;
+        }
+        // =========================
+        // 识别年份：2024 / 2024年
+        // =========================
+        if(/^\d{4}年?$/.test(line)){
+            currentYear = parseInt(line.replace("年",""));
+            return;
+        }
+        // =========================
+        // 识别完整日期：
+        // 2024.8.7
+        // 2024-8-7
+        // 2024/8/7
+        // =========================
+        let fullDateMatch = line.match(
+            /^(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})$/
+        );
+        if(fullDateMatch){
+            if(current){
+                result.push(current);
+            }
+            let year = fullDateMatch[1];
+            let month = fullDateMatch[2].padStart(2,"0");
+            let day = fullDateMatch[3].padStart(2,"0");
+            current = {
+                date: `${year}-${month}-${day}`,
+                title: `${month}月${day}日的梦`,
+                content: ""
+            };
+            return;
+        }
+        // =========================
+        // 识别普通日期：
+        // 8.7
+        // 8-7
+        // 8/7
+        // =========================
+        let shortDateMatch = line.match(
+            /^(\d{1,2})[.\-/](\d{1,2})$/
+        );
+        if(shortDateMatch){
+            if(current){
+                result.push(current);
+            }
+            let month = shortDateMatch[1].padStart(2,"0");
+            let day = shortDateMatch[2].padStart(2,"0");
+            current = {
+                date: `${currentYear}-${month}-${day}`,
+                title: `${month}月${day}日的梦`,
+                content: ""
+            };
+            return;
+        }
+        // =========================
+        // 普通正文
+        // =========================
+        if(current){
+            current.content += line + "\n";
+        }
+    });
+    if(current){
+        result.push(current);
+    }
+    return result;
 }
 // 监听整个页面的键盘事件
 document.addEventListener('keydown', function(event) {
@@ -250,4 +296,36 @@ function generateTags(content) {
         tags.push("日常");
     }
     return tags;
+}
+async function fixOldTags(){
+    const { data: dreams, error } = await supabaseClient
+        .from("dreams")
+        .select("id, content")
+        .is("tags", null);
+    if(error){
+        console.log(error);
+        alert("读取旧梦境失败：" + error.message);
+        return;
+    }
+    if(!dreams || dreams.length === 0){
+        alert("没有发现需要补标签的梦境");
+        return;
+    }
+    let count = 0;
+    for(const dream of dreams){
+        const tags = generateTags(dream.content);
+        const { error } = await supabaseClient
+            .from("dreams")
+            .update({
+                tags: tags.join(",")
+            })
+            .eq("id", dream.id);
+        if(error){
+            console.log("更新失败：", dream.id, error);
+        }else{
+            count++;
+        }
+    }
+    alert("旧梦境标签补完！共更新 " + count + " 条");
+    loadDreams();
 }
