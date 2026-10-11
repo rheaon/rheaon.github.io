@@ -358,3 +358,64 @@ async function rebuildAllTags(){
     alert("标签重新生成完成！共更新 " + count + " 条梦境");
     loadDreams();
 }
+let lastRandomDreamId = null;
+async function randomDream() {
+    let lastRandomDreamId = null;
+    // 检查是否已登录
+    const { data: userData, error: authError } =
+        await supabaseClient.auth.getUser();
+    if (authError || !userData.user) {
+        alert("请先登录");
+        return;
+    }
+    // 读取现有梦境
+    const { data: dreams, error } = await supabaseClient
+        .from("dreams")
+        .select("id, date, title, content, tags")
+        .order("date", { ascending: false });
+    if (error) {
+        console.error("读取随机梦境失败：", error);
+        alert("读取梦境失败，请检查网络或权限设置");
+        return;
+    }
+    if (!dreams || dreams.length === 0) {
+        alert("还没有可以抽取的梦境哦");
+        return;
+    }
+    // 随机抽取一条
+let candidates = dreams;
+// 如果有多条梦境，排除上一次抽中的梦境
+if (
+    dreams.length > 1 &&
+    lastRandomDreamId !== null
+) {
+    candidates = dreams.filter(
+        dream => dream.id !== lastRandomDreamId
+    );
+}
+// 随机抽取
+const dream = candidates[
+    Math.floor(Math.random() * candidates.length)
+];
+// 记录本次抽中的梦境 ID
+lastRandomDreamId = dream.id;
+    // 显示抽取结果
+    const box = document.getElementById("randomDreamBox");
+    const tags = dream.tags
+        ? dream.tags.split(",")
+            .map(tag => "#" + tag.trim())
+            .join(" ")
+        : "";
+    box.innerHTML = `
+        <h3>🎲 抽到了这场梦！</h3>
+        <p class="dream-date">${dream.date || ""}</p>
+        <h2 class="dream-title">${dream.title || "无标题"}</h2>
+        <p class="dream-content"></p>
+        <div class="dream-tags">${tags}</div>
+        <button onclick="randomDream()">再抽一次</button>
+    `;
+    // 使用 textContent 展示正文，避免把梦境内容当成 HTML 执行
+    box.querySelector(".dream-content").textContent =
+        dream.content || "没有记录正文";
+    box.style.display = "block";
+}
